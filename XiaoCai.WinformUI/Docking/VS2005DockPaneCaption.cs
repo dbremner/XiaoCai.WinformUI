@@ -18,17 +18,13 @@ namespace XiaoCai.WinformUI.Docking
             public InertButton(VS2005DockPaneCaption dockPaneCaption, Bitmap image, Bitmap imageAutoHide)
                 : base()
             {
-                m_dockPaneCaption = dockPaneCaption;
+                DockPaneCaption = dockPaneCaption;
                 m_image = image;
                 m_imageAutoHide = imageAutoHide;
                 RefreshChanges();
             }
 
-            private VS2005DockPaneCaption m_dockPaneCaption;
-            private VS2005DockPaneCaption DockPaneCaption
-            {
-                get { return m_dockPaneCaption; }
-            }
+            private VS2005DockPaneCaption DockPaneCaption { get; }
 
             public bool IsAutoHide
             {
@@ -185,19 +181,15 @@ namespace XiaoCai.WinformUI.Docking
             }
         }
 
-        private IContainer m_components;
-        private IContainer Components
-        {
-            get { return m_components; }
-        }
+	    private IContainer Components { get; }
 
-		private ToolTip m_toolTip;
+	    private ToolTip m_toolTip;
 
 		public VS2005DockPaneCaption(DockPane pane) : base(pane)
 		{
 			SuspendLayout();
 
-            m_components = new Container();
+            Components = new Container();
             m_toolTip = new ToolTip(Components);
 
 			ResumeLayout();

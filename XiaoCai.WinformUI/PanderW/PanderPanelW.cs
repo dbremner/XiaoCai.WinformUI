@@ -33,7 +33,6 @@ namespace XiaoCai.WinformUI.Panels
 		private System.Drawing.Image m_imageChevron;
         private System.Drawing.Image m_imageChevronUp;
         private System.Drawing.Image m_imageChevronDown;
-        private CustomPanderPanelWColors m_customColors;
         private System.Drawing.Image m_imageClosePanel;
         private bool m_bIsClosable = true;
         private CaptionStyle m_captionStyle;
@@ -85,10 +84,8 @@ namespace XiaoCai.WinformUI.Panels
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         [Description("The custom colors which are used for the PanderPanelW.")]
         [Category("Appearance")]
-        public CustomPanderPanelWColors CustomColors
-        {
-            get { return this.m_customColors; }
-        }
+        public CustomPanderPanelWColors CustomColors { get; }
+
         /// <summary>
         /// Gets or sets the style of the caption (not for PanelStyle.Aqua).
         /// </summary>
@@ -148,8 +145,8 @@ namespace XiaoCai.WinformUI.Panels
             this.ForeColor = SystemColors.ControlText;
 			this.Height = this.CaptionHeight;
 			this.ShowBorder = true;
-            this.m_customColors = new CustomPanderPanelWColors();
-            this.m_customColors.CustomColorsChanged += OnCustomColorsChanged;
+            this.CustomColors = new CustomPanderPanelWColors();
+            this.CustomColors.CustomColorsChanged += OnCustomColorsChanged;
 
 		}
         /// <summary>

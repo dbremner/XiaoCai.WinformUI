@@ -7,17 +7,15 @@ namespace XiaoCai.WinformUI.Panels
     public class HoverStateChangeEventArgs : EventArgs
     {
         #region FieldsPrivate
-        private HoverState m_hoverState;
+
         #endregion
 
         #region Properties
         /// <summary>
         /// Gets the HoverState.
         /// </summary>
-        public HoverState HoverState
-        {
-            get { return this.m_hoverState; }
-        }
+        public HoverState HoverState { get; }
+
         #endregion
 
         #region MethodsPublic
@@ -27,7 +25,7 @@ namespace XiaoCai.WinformUI.Panels
         /// <param name="hoverState">The <see cref="HoverState"/> values.</param>
         public HoverStateChangeEventArgs(HoverState hoverState)
         {
-            this.m_hoverState = hoverState;
+            this.HoverState = hoverState;
         }
         #endregion
     }

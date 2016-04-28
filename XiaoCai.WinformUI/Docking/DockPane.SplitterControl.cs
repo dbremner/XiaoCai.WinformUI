@@ -10,18 +10,13 @@ namespace XiaoCai.WinformUI.Docking
     {
         private class SplitterControl : Control, ISplitterDragSource
         {
-            DockPane m_pane;
-
             public SplitterControl(DockPane pane)
             {
                 SetStyle(ControlStyles.Selectable, false);
-                m_pane = pane;
+                DockPane = pane;
             }
 
-            public DockPane DockPane
-            {
-                get { return m_pane; }
-            }
+            public DockPane DockPane { get; }
 
             private DockAlignment m_alignment;
             public DockAlignment Alignment
@@ -142,11 +137,7 @@ namespace XiaoCai.WinformUI.Docking
             #endregion
         }
 
-        private SplitterControl m_splitter;
-        private SplitterControl Splitter
-        {
-            get { return m_splitter; }
-        }
+        private SplitterControl Splitter { get; set; }
 
         internal Rectangle SplitterBounds
         {

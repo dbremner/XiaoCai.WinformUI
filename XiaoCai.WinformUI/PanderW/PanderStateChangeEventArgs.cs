@@ -5,22 +5,17 @@ namespace XiaoCai.WinformUI.Panels
 	public class PanderStateChangeEventArgs : EventArgs
 	{
 		#region FieldsPrivate
-		
-		private bool m_bExpand;
-		
-		#endregion
+
+	    #endregion
 		
 		#region Properties
 		
 		/// <summary>
         /// Gets a value indicating whether the panel expands.
 		/// </summary>
-        public bool Expand
-		{
-			get {return m_bExpand;}
-		}
-		
-		#endregion
+        public bool Expand { get; }
+
+	    #endregion
 
 		#region MethodsPublic
         /// <summary>
@@ -29,7 +24,7 @@ namespace XiaoCai.WinformUI.Panels
         /// <param name="bExpand">Gets a value indicating whether the panel expands.</param>
 		public PanderStateChangeEventArgs(bool bExpand)
 		{
-			this.m_bExpand = bExpand;
+			this.Expand = bExpand;
 		}
 
 		#endregion

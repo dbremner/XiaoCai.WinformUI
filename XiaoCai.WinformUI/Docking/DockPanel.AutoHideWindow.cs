@@ -14,14 +14,10 @@ namespace XiaoCai.WinformUI.Docking
             {
                 public SplitterControl(AutoHideWindowControl autoHideWindow)
                 {
-                    m_autoHideWindow = autoHideWindow;
+                    AutoHideWindow = autoHideWindow;
                 }
 
-                private AutoHideWindowControl m_autoHideWindow;
-                private AutoHideWindowControl AutoHideWindow
-                {
-                    get { return m_autoHideWindow; }
-                }
+                private AutoHideWindowControl AutoHideWindow { get; }
 
                 protected override int SplitterSize
                 {
@@ -43,7 +39,7 @@ namespace XiaoCai.WinformUI.Docking
 
             public AutoHideWindowControl(DockPanel dockPanel)
             {
-                m_dockPanel = dockPanel;
+                DockPanel = dockPanel;
 
                 m_timerMouseTrack = new Timer();
                 m_timerMouseTrack.Tick += new EventHandler(TimerMouseTrack_Tick);
@@ -62,25 +58,18 @@ namespace XiaoCai.WinformUI.Docking
                 base.Dispose(disposing);
             }
 
-            private DockPanel m_dockPanel = null;
-            public DockPanel DockPanel
-            {
-                get { return m_dockPanel; }
-            }
+            public DockPanel DockPanel { get; } = null;
 
-            private DockPane m_activePane = null;
-            public DockPane ActivePane
-            {
-                get { return m_activePane; }
-            }
+            public DockPane ActivePane { get; private set; } = null;
+
             private void SetActivePane()
             {
                 DockPane value = (ActiveContent == null ? null : ActiveContent.DockHandler.Pane);
 
-                if (value == m_activePane)
+                if (value == ActivePane)
                     return;
 
-                m_activePane = value;
+                ActivePane = value;
             }
 
             private IDockContent m_activeContent = null;
@@ -127,12 +116,7 @@ namespace XiaoCai.WinformUI.Docking
                 get { return ActiveContent == null ? DockState.Unknown : ActiveContent.DockHandler.DockState; }
             }
 
-            private bool m_flagAnimate = true;
-            private bool FlagAnimate
-            {
-                get { return m_flagAnimate; }
-                set { m_flagAnimate = value; }
-            }
+            private bool FlagAnimate { get; set; } = true;
 
             private bool m_flagDragging = false;
             internal bool FlagDragging
@@ -524,14 +508,11 @@ namespace XiaoCai.WinformUI.Docking
             #endregion
         }
 
-        private AutoHideWindowControl AutoHideWindow
-        {
-            get { return m_autoHideWindow; }
-        }
+        private AutoHideWindowControl AutoHideWindow { get; }
 
         internal Control AutoHideControl
         {
-            get { return m_autoHideWindow; }
+            get { return AutoHideWindow; }
         }
 
         internal void RefreshActiveAutoHideContent()

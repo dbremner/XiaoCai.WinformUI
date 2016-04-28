@@ -54,10 +54,8 @@ namespace XiaoCai.WinformUI.Panels
         private CaptionStyle m_captionStyle;
 		private XiaoCai.WinformUI.Panels.PanelStyle m_ePanelStyle;
 		private XiaoCai.WinformUI.Panels.ColorScheme m_eColorScheme;
-		private PanderPanelWCollection m_PanderPanelWs;
-        private PanelColors m_panelColors;
 
-		#endregion
+        #endregion
 
 		#region Properties
 		/// <summary>
@@ -84,11 +82,9 @@ namespace XiaoCai.WinformUI.Panels
 		Description("Collection containing all the PanderPanelWs for the PanderPanelListW.")]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		[Editor(typeof(PanderPanelWCollectionEditor), typeof(UITypeEditor))]
-		public PanderPanelWCollection PanderPanelWs
-		{
-			get { return this.m_PanderPanelWs; }
-		}
-		/// <summary>
+		public PanderPanelWCollection PanderPanelWs { get; }
+
+        /// <summary>
 		/// Specifies the style of the panels in this PanderPanelListW.
 		/// </summary>
 		[Description("Specifies the style of the PanderPanelWs in this PanderPanelListW."),
@@ -109,12 +105,9 @@ namespace XiaoCai.WinformUI.Panels
         /// <summary>
         /// Gets or sets the Panelcolors table.
         /// </summary>
-        public PanelColors PanelColors
-        {
-            get { return this.m_panelColors; }
-            set { this.m_panelColors = value; }
-        }
-		/// <summary>
+        public PanelColors PanelColors { get; set; }
+
+        /// <summary>
 		/// Specifies the colorscheme of the PanderPanelWs in the PanderPanelListW
 		/// </summary>
 		[Description("The colorscheme of the PanderPanelWs in the PanderPanelListW")]
@@ -303,7 +296,7 @@ namespace XiaoCai.WinformUI.Panels
 			
 			InitializeComponent();
 
-            this.m_PanderPanelWs = new PanderPanelWCollection(this);
+            this.PanderPanelWs = new PanderPanelWCollection(this);
             
             this.ShowBorder = true;
             this.PanelStyle = PanelStyle.Default;
@@ -345,7 +338,7 @@ namespace XiaoCai.WinformUI.Panels
 			PanderPanelW PanderPanelW = panel as PanderPanelW;
 			if (PanderPanelW != null)
 			{
-				foreach (PanderPanelW tmpPanderPanelW in this.m_PanderPanelWs)
+				foreach (PanderPanelW tmpPanderPanelW in this.PanderPanelWs)
 				{
 					if (tmpPanderPanelW.Equals(PanderPanelW) == false)
 					{
@@ -457,9 +450,9 @@ namespace XiaoCai.WinformUI.Panels
 			base.OnResize(e);
 			int iPanderPanelWCaptionHeight = 0;
 			
-			if (this.m_PanderPanelWs != null)
+			if (this.PanderPanelWs != null)
 			{
-				foreach (PanderPanelW PanderPanelW in this.m_PanderPanelWs)
+				foreach (PanderPanelW PanderPanelW in this.PanderPanelWs)
 				{
 					PanderPanelW.Width = this.ClientRectangle.Width
 						- this.Padding.Left
@@ -471,7 +464,7 @@ namespace XiaoCai.WinformUI.Panels
 					iPanderPanelWCaptionHeight += PanderPanelW.CaptionHeight;
 				}
 
-				foreach (PanderPanelW PanderPanelW in this.m_PanderPanelWs)
+				foreach (PanderPanelW PanderPanelW in this.PanderPanelWs)
 				{
 					if (PanderPanelW.Expand == true)
 					{

@@ -85,17 +85,12 @@ namespace XiaoCai.WinformUI.Panels
         private Rectangle m_imageRectangle;
 		private bool m_bShowBorder;
         private bool m_bExpand;
-        private Size m_imageSize;
-        private XiaoCai.WinformUI.Panels.ColorScheme m_eColorScheme;
-        private PanelColors m_panelColors;
-        private PanelStyle m_ePanelStyle;
+	    private XiaoCai.WinformUI.Panels.ColorScheme m_eColorScheme;
+	    private PanelStyle m_ePanelStyle;
         private Image m_image;
-        private HoverState m_hoverStateCaptionBar;
-        private HoverState m_hoverStateExpandIcon;
-        private string m_strToolTipTextExpandIconPanelExpanded;
+	    private string m_strToolTipTextExpandIconPanelExpanded;
         private string m_strToolTipTextExpandIconPanelCollapsed;
-        private HoverState m_hoverStateCloseIcon;
-        private string m_strToolTipTextCloseIcon;
+	    private string m_strToolTipTextCloseIcon;
         private bool m_bShowExpandIcon;
 		private bool m_bShowCloseIcon;
         private System.Windows.Forms.ToolTip m_toolTip;
@@ -342,43 +337,29 @@ namespace XiaoCai.WinformUI.Panels
         /// <summary>
         /// Gets the panelcolors table.
         /// </summary>
-        protected PanelColors PanelColors
-        {
-            get { return m_panelColors; }
-        }
-        /// <summary>
+        protected PanelColors PanelColors { get; private set; }
+
+	    /// <summary>
         /// Gets or sets the HoverState of the CaptionBar at a Panel or PanderPanelW.
         /// </summary>
-        internal HoverState HoverStateCaptionBar
-        {
-            get { return this.m_hoverStateCaptionBar; }
-            set { this.m_hoverStateCaptionBar = value; }
-        }
-        /// <summary>
+        internal HoverState HoverStateCaptionBar { get; set; }
+
+	    /// <summary>
         /// Gets or sets the HoverState of the CloseIcon in a captionbar at a Panel or PanderPanelW.
         /// </summary>
-        internal HoverState HoverStateCloseIcon
-        {
-            get { return this.m_hoverStateCloseIcon; }
-            set { this.m_hoverStateCloseIcon = value; }
-        }
-        /// <summary>
+        internal HoverState HoverStateCloseIcon { get; set; }
+
+	    /// <summary>
         /// Gets or sets the HoverState of the ExpandIcon in a captionbar at a Panel or PanderPanelW.
         /// </summary>
-        internal HoverState HoverStateExpandIcon
-        {
-            get { return this.m_hoverStateExpandIcon; }
-            set { this.m_hoverStateExpandIcon = value; }
-        }
-        /// <summary>
+        internal HoverState HoverStateExpandIcon { get; set; }
+
+	    /// <summary>
         /// Gets or sets the size of an image in the captionbar.
         /// </summary>
-        internal Size ImageSize
-        {
-            get { return this.m_imageSize; }
-            set { this.m_imageSize = value; }
-        }
-        /// <summary>
+        internal Size ImageSize { get; set; }
+
+	    /// <summary>
         /// Gets the size of a captionbar in a Panel or PanderPanelW
         /// </summary>
         internal Rectangle CaptionRectangle
@@ -397,8 +378,8 @@ namespace XiaoCai.WinformUI.Panels
                     this.m_imageRectangle = new Rectangle(
                         CaptionSpacing,
                         this.CaptionHeight,
-                        this.m_imageSize.Width,
-                        this.m_imageSize.Height);
+                        this.ImageSize.Width,
+                        this.ImageSize.Height);
                 }
                 return this.m_imageRectangle;
 			}
@@ -420,7 +401,7 @@ namespace XiaoCai.WinformUI.Panels
                     Resources.IDS_ArgumentException,
                     "panelColors"));
             }
-            this.m_panelColors = panelColors;
+            this.PanelColors = panelColors;
             this.ColorScheme = ColorScheme.Professional;
             this.Invalidate(true);
         }
@@ -441,8 +422,8 @@ namespace XiaoCai.WinformUI.Panels
             this.CaptionFont = new Font(SystemFonts.CaptionFont.FontFamily, SystemFonts.CaptionFont.SizeInPoints - 1.0F, FontStyle.Bold);
             this.CaptionHeight = 25;
             this.PanelStyle = PanelStyle.Default;
-            this.m_panelColors = new PanelColors(this);
-            this.m_imageSize = new Size(16, 16);
+            this.PanelColors = new PanelColors(this);
+            this.ImageSize = new Size(16, 16);
             this.m_imageRectangle = Rectangle.Empty;
             this.m_toolTip = new System.Windows.Forms.ToolTip();
             
@@ -494,18 +475,18 @@ namespace XiaoCai.WinformUI.Panels
 		{
             if (this.CaptionRectangle.Contains(e.X, e.Y) == true)
             {
-                if (this.m_hoverStateCaptionBar == HoverState.None)
+                if (this.HoverStateCaptionBar == HoverState.None)
                 {
-                    this.m_hoverStateCaptionBar = HoverState.Hover;
-                    OnCaptionBarHoverStateChanged(this, new HoverStateChangeEventArgs(this.m_hoverStateCaptionBar));
+                    this.HoverStateCaptionBar = HoverState.Hover;
+                    OnCaptionBarHoverStateChanged(this, new HoverStateChangeEventArgs(this.HoverStateCaptionBar));
                 }
             }
             else
             {
-                if (this.m_hoverStateCaptionBar == HoverState.Hover)
+                if (this.HoverStateCaptionBar == HoverState.Hover)
                 {
-                    this.m_hoverStateCaptionBar = HoverState.None;
-                    OnCaptionBarHoverStateChanged(this, new HoverStateChangeEventArgs(this.m_hoverStateCaptionBar));
+                    this.HoverStateCaptionBar = HoverState.None;
+                    OnCaptionBarHoverStateChanged(this, new HoverStateChangeEventArgs(this.HoverStateCaptionBar));
                 }
             }
 
@@ -513,34 +494,34 @@ namespace XiaoCai.WinformUI.Panels
             {
                 if (this.RectangleExpandIcon.Contains(e.X, e.Y) == true)
                 {
-                    if (this.m_hoverStateExpandIcon == HoverState.None)
+                    if (this.HoverStateExpandIcon == HoverState.None)
                     {
-                        this.m_hoverStateExpandIcon = HoverState.Hover;
-                        OnExpandIconHoverStateChanged(this, new HoverStateChangeEventArgs(this.m_hoverStateExpandIcon));
+                        this.HoverStateExpandIcon = HoverState.Hover;
+                        OnExpandIconHoverStateChanged(this, new HoverStateChangeEventArgs(this.HoverStateExpandIcon));
                     }
                 }
                 else
                 {
-                    if (this.m_hoverStateExpandIcon == HoverState.Hover)
+                    if (this.HoverStateExpandIcon == HoverState.Hover)
                     {
-                        this.m_hoverStateExpandIcon = HoverState.None;
-                        OnExpandIconHoverStateChanged(this, new HoverStateChangeEventArgs(this.m_hoverStateExpandIcon));
+                        this.HoverStateExpandIcon = HoverState.None;
+                        OnExpandIconHoverStateChanged(this, new HoverStateChangeEventArgs(this.HoverStateExpandIcon));
                     }
                 }
                 if (this.RectangleCloseIcon.Contains(e.X, e.Y) == true)
                 {
-                    if (this.m_hoverStateCloseIcon == HoverState.None)
+                    if (this.HoverStateCloseIcon == HoverState.None)
                     {
-                        this.m_hoverStateCloseIcon = HoverState.Hover;
-                        OnCloseIconHoverStateChanged(this, new HoverStateChangeEventArgs(this.m_hoverStateCloseIcon));
+                        this.HoverStateCloseIcon = HoverState.Hover;
+                        OnCloseIconHoverStateChanged(this, new HoverStateChangeEventArgs(this.HoverStateCloseIcon));
                     }
                 }
                 else
                 {
-                    if (this.m_hoverStateCloseIcon == HoverState.Hover)
+                    if (this.HoverStateCloseIcon == HoverState.Hover)
                     {
-                        this.m_hoverStateCloseIcon = HoverState.None;
-                        OnCloseIconHoverStateChanged(this, new HoverStateChangeEventArgs(this.m_hoverStateCloseIcon));
+                        this.HoverStateCloseIcon = HoverState.None;
+                        OnCloseIconHoverStateChanged(this, new HoverStateChangeEventArgs(this.HoverStateCloseIcon));
                     }
                 }
             }
@@ -552,20 +533,20 @@ namespace XiaoCai.WinformUI.Panels
         /// <param name="e">An EventArgs that contains the event data.</param>
         protected override void OnMouseLeave(EventArgs e)
         {
-            if (this.m_hoverStateCaptionBar == HoverState.Hover)
+            if (this.HoverStateCaptionBar == HoverState.Hover)
             {
-                this.m_hoverStateCaptionBar = HoverState.None;
-                OnCaptionBarHoverStateChanged(this,new HoverStateChangeEventArgs(this.m_hoverStateCaptionBar));
+                this.HoverStateCaptionBar = HoverState.None;
+                OnCaptionBarHoverStateChanged(this,new HoverStateChangeEventArgs(this.HoverStateCaptionBar));
             }
-            if (this.m_hoverStateExpandIcon == HoverState.Hover)
+            if (this.HoverStateExpandIcon == HoverState.Hover)
             {
-                this.m_hoverStateExpandIcon = HoverState.None;
-                OnExpandIconHoverStateChanged(this, new HoverStateChangeEventArgs(this.m_hoverStateExpandIcon));
+                this.HoverStateExpandIcon = HoverState.None;
+                OnExpandIconHoverStateChanged(this, new HoverStateChangeEventArgs(this.HoverStateExpandIcon));
             }
-            if (this.m_hoverStateCloseIcon == HoverState.Hover)
+            if (this.HoverStateCloseIcon == HoverState.Hover)
             {
-                this.m_hoverStateCloseIcon = HoverState.None;
-                OnCloseIconHoverStateChanged(this, new HoverStateChangeEventArgs(this.m_hoverStateCloseIcon));
+                this.HoverStateCloseIcon = HoverState.None;
+                OnCloseIconHoverStateChanged(this, new HoverStateChangeEventArgs(this.HoverStateCloseIcon));
             }
             base.OnMouseLeave(e);
         }
@@ -604,10 +585,10 @@ namespace XiaoCai.WinformUI.Panels
             switch (panelStyle)
             {
                 case PanelStyle.Default:
-                    m_panelColors = new PanelColors(this);
+                    PanelColors = new PanelColors(this);
                     break;
                 case PanelStyle.Office2007:
-                    m_panelColors = new PanelColorsOffice2007Blue(this);
+                    PanelColors = new PanelColorsOffice2007Blue(this);
                     break;
             }
             Invalidate(true);

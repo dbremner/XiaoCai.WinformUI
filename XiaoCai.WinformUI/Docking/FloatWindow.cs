@@ -10,8 +10,7 @@ namespace XiaoCai.WinformUI.Docking
 {
 	public class FloatWindow : Form, INestedPanesContainer, IDockDragSource
 	{
-		private NestedPaneCollection m_nestedPanes;
-		internal const int WM_CHECKDISPOSE = (int)(Win32.Msgs.WM_USER + 1);
+	    internal const int WM_CHECKDISPOSE = (int)(Win32.Msgs.WM_USER + 1);
 
 		internal protected FloatWindow(DockPanel dockPanel, DockPane pane)
 		{
@@ -28,7 +27,7 @@ namespace XiaoCai.WinformUI.Docking
 			if (dockPanel == null)
                 throw (new ArgumentNullException(XiaoCai.WinformUI.Properties.Resources.FloatWindow_Constructor_NullDockPanel));
 
-			m_nestedPanes = new NestedPaneCollection(this);
+			NestedPanes = new NestedPaneCollection(this);
 
 			FormBorderStyle = FormBorderStyle.SizableToolWindow;
 			ShowInTaskbar = false;
@@ -49,7 +48,7 @@ namespace XiaoCai.WinformUI.Docking
                 Size = dockPanel.DefaultFloatWindowSize;
             }
 
-			m_dockPanel = dockPanel;
+			DockPanel = dockPanel;
 			Owner = DockPanel.FindForm();
 			DockPanel.AddFloatWindow(this);
 			if (pane != null)
@@ -64,35 +63,23 @@ namespace XiaoCai.WinformUI.Docking
 			{
 				if (DockPanel != null)
 					DockPanel.RemoveFloatWindow(this);
-				m_dockPanel = null;
+				DockPanel = null;
 			}
 			base.Dispose(disposing);
 		}
 
-		private bool m_allowEndUserDocking = true;
-		public bool AllowEndUserDocking
-		{
-			get	{	return m_allowEndUserDocking;	}
-			set	{	m_allowEndUserDocking = value;	}
-		}
+	    public bool AllowEndUserDocking { get; set; } = true;
 
-		public NestedPaneCollection NestedPanes
-		{
-			get	{	return m_nestedPanes;	}
-		}
+	    public NestedPaneCollection NestedPanes { get; private set; }
 
-		public VisibleNestedPaneCollection VisibleNestedPanes
+	    public VisibleNestedPaneCollection VisibleNestedPanes
 		{
 			get	{	return NestedPanes.VisibleNestedPanes;	}
 		}
 
-		private DockPanel m_dockPanel;
-		public DockPanel DockPanel
-		{
-			get	{	return m_dockPanel;	}
-		}
+	    public DockPanel DockPanel { get; private set; }
 
-		public DockState DockState
+	    public DockState DockState
 		{
 			get	{	return DockState.Float;	}
 		}
@@ -167,7 +154,7 @@ namespace XiaoCai.WinformUI.Docking
 				if (result == 2 && DockPanel.AllowEndUserDocking && this.AllowEndUserDocking)	// HITTEST_CAPTION
 				{
 					Activate();
-					m_dockPanel.BeginDrag(this);
+					DockPanel.BeginDrag(this);
 				}
 				else
 					base.WndProc(ref m);

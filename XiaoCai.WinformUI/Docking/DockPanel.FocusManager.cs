@@ -123,18 +123,14 @@ namespace XiaoCai.WinformUI.Docking
 
             public FocusManagerImpl(DockPanel dockPanel)
             {
-                m_dockPanel = dockPanel;
+                DockPanel = dockPanel;
                 m_localWindowsHook = new LocalWindowsHook(Win32.HookType.WH_CALLWNDPROCRET);
                 m_hookEventHandler = new LocalWindowsHook.HookEventHandler(HookEventHandler);
                 m_localWindowsHook.HookInvoked += m_hookEventHandler;
                 m_localWindowsHook.Install();
             }
 
-            private DockPanel m_dockPanel;
-            public DockPanel DockPanel
-            {
-                get { return m_dockPanel; }
-            }
+            public DockPanel DockPanel { get; }
 
             private bool m_disposed = false;
             protected override void Dispose(bool disposing)
@@ -151,12 +147,7 @@ namespace XiaoCai.WinformUI.Docking
                 }
             }
 
-            private IDockContent m_contentActivating = null;
-            private IDockContent ContentActivating
-            {
-                get { return m_contentActivating; }
-                set { m_contentActivating = value; }
-            }
+            private IDockContent ContentActivating { get; set; } = null;
 
             public void Activate(IDockContent content)
             {
@@ -181,11 +172,8 @@ namespace XiaoCai.WinformUI.Docking
                 }
             }
 
-            private List<IDockContent> m_listContent = new List<IDockContent>();
-            private List<IDockContent> ListContent
-            {
-                get { return m_listContent; }
-            }
+            private List<IDockContent> ListContent { get; } = new List<IDockContent>();
+
             public void AddToList(IDockContent content)
             {
                 if (ListContent.Contains(content) || IsInActiveList(content))
@@ -202,12 +190,7 @@ namespace XiaoCai.WinformUI.Docking
                     ListContent.Remove(content);
             }
 
-            private IDockContent m_lastActiveContent = null;
-            private IDockContent LastActiveContent
-            {
-                get { return m_lastActiveContent; }
-                set { m_lastActiveContent = value; }
-            }
+            private IDockContent LastActiveContent { get; set; } = null;
 
             private bool IsInActiveList(IDockContent content)
             {
@@ -350,16 +333,12 @@ namespace XiaoCai.WinformUI.Docking
                 return pane;
             }
 
-            private bool m_inRefreshActiveWindow = false;
-            private bool InRefreshActiveWindow
-            {
-                get { return m_inRefreshActiveWindow; }
-            }
+            private bool InRefreshActiveWindow { get; set; } = false;
 
             private void RefreshActiveWindow()
             {
                 SuspendFocusTracking();
-                m_inRefreshActiveWindow = true;
+                InRefreshActiveWindow = true;
 
                 DockPane oldActivePane = ActivePane;
                 IDockContent oldActiveContent = ActiveContent;
@@ -372,7 +351,7 @@ namespace XiaoCai.WinformUI.Docking
                 DockPanel.AutoHideWindow.RefreshActivePane();
 
                 ResumeFocusTracking();
-                m_inRefreshActiveWindow = false;
+                InRefreshActiveWindow = false;
 
                 if (oldActiveContent != ActiveContent)
                     DockPanel.OnActiveContentChanged(EventArgs.Empty);
@@ -382,58 +361,46 @@ namespace XiaoCai.WinformUI.Docking
                     DockPanel.OnActivePaneChanged(EventArgs.Empty);
             }
 
-            private DockPane m_activePane = null;
-            public DockPane ActivePane
-            {
-                get { return m_activePane; }
-            }
+            public DockPane ActivePane { get; private set; } = null;
 
             private void SetActivePane()
             {
                 DockPane value = GetPaneFromHandle(NativeMethods.GetFocus());
-                if (m_activePane == value)
+                if (ActivePane == value)
                     return;
 
-                if (m_activePane != null)
-                    m_activePane.SetIsActivated(false);
+                if (ActivePane != null)
+                    ActivePane.SetIsActivated(false);
 
-                m_activePane = value;
+                ActivePane = value;
 
-                if (m_activePane != null)
-                    m_activePane.SetIsActivated(true);
+                if (ActivePane != null)
+                    ActivePane.SetIsActivated(true);
             }
 
-            private IDockContent m_activeContent = null;
-            public IDockContent ActiveContent
-            {
-                get { return m_activeContent; }
-            }
+            public IDockContent ActiveContent { get; private set; } = null;
 
             internal void SetActiveContent()
             {
                 IDockContent value = ActivePane == null ? null : ActivePane.ActiveContent;
 
-                if (m_activeContent == value)
+                if (ActiveContent == value)
                     return;
 
-                if (m_activeContent != null)
-                    m_activeContent.DockHandler.IsActivated = false;
+                if (ActiveContent != null)
+                    ActiveContent.DockHandler.IsActivated = false;
 
-                m_activeContent = value;
+                ActiveContent = value;
 
-                if (m_activeContent != null)
+                if (ActiveContent != null)
                 {
-                    m_activeContent.DockHandler.IsActivated = true;
-                    if (!DockHelper.IsDockStateAutoHide((m_activeContent.DockHandler.DockState)))
-                        AddLastToActiveList(m_activeContent);
+                    ActiveContent.DockHandler.IsActivated = true;
+                    if (!DockHelper.IsDockStateAutoHide((ActiveContent.DockHandler.DockState)))
+                        AddLastToActiveList(ActiveContent);
                 }
             }
 
-            private DockPane m_activeDocumentPane = null;
-            public DockPane ActiveDocumentPane
-            {
-                get { return m_activeDocumentPane; }
-            }
+            public DockPane ActiveDocumentPane { get; private set; } = null;
 
             private void SetActiveDocumentPane()
             {
@@ -452,32 +419,28 @@ namespace XiaoCai.WinformUI.Docking
                         value = ActiveDocumentPane;
                 }
 
-                if (m_activeDocumentPane == value)
+                if (ActiveDocumentPane == value)
                     return;
 
-                if (m_activeDocumentPane != null)
-                    m_activeDocumentPane.SetIsActiveDocumentPane(false);
+                if (ActiveDocumentPane != null)
+                    ActiveDocumentPane.SetIsActiveDocumentPane(false);
 
-                m_activeDocumentPane = value;
+                ActiveDocumentPane = value;
 
-                if (m_activeDocumentPane != null)
-                    m_activeDocumentPane.SetIsActiveDocumentPane(true);
+                if (ActiveDocumentPane != null)
+                    ActiveDocumentPane.SetIsActiveDocumentPane(true);
             }
 
-            private IDockContent m_activeDocument = null;
-            public IDockContent ActiveDocument
-            {
-                get { return m_activeDocument; }
-            }
+            public IDockContent ActiveDocument { get; private set; } = null;
 
             private void SetActiveDocument()
             {
                 IDockContent value = ActiveDocumentPane == null ? null : ActiveDocumentPane.ActiveContent;
 
-                if (m_activeDocument == value)
+                if (ActiveDocument == value)
                     return;
 
-                m_activeDocument = value;
+                ActiveDocument = value;
             }
         }
 

@@ -17,29 +17,13 @@ namespace XiaoCai.WinformUI.Docking
             SaveOldValues();
         }
 
-        private Rectangle m_oldFloatWindowBounds;
-        protected Rectangle OldFloatWindowBounds
-        {
-            get { return m_oldFloatWindowBounds; }
-        }
+        protected Rectangle OldFloatWindowBounds { get; private set; }
 
-        private Control m_oldDockTo;
-        protected Control OldDockTo
-        {
-            get { return m_oldDockTo; }
-        }
+        protected Control OldDockTo { get; private set; }
 
-        private DockStyle m_oldDock;
-        protected DockStyle OldDock
-        {
-            get { return m_oldDock; }
-        }
+        protected DockStyle OldDock { get; private set; }
 
-        private int m_oldContentIndex;
-        protected int OldContentIndex
-        {
-            get { return m_oldContentIndex; }
-        }
+        protected int OldContentIndex { get; private set; }
 
         protected bool SameAsOldValue
         {
@@ -52,48 +36,27 @@ namespace XiaoCai.WinformUI.Docking
             }
         }
 
-        private Rectangle m_floatWindowBounds;
-        public Rectangle FloatWindowBounds
-        {
-            get { return m_floatWindowBounds; }
-        }
+        public Rectangle FloatWindowBounds { get; private set; }
 
-        private Control m_dockTo;
-        public Control DockTo
-        {
-            get { return m_dockTo; }
-        }
+        public Control DockTo { get; private set; }
 
-        private DockStyle m_dock;
-        public DockStyle Dock
-        {
-            get { return m_dock; }
-        }
+        public DockStyle Dock { get; private set; }
 
-        private int m_contentIndex;
-        public int ContentIndex
-        {
-            get { return m_contentIndex; }
-        }
+        public int ContentIndex { get; private set; }
 
         public bool FlagFullEdge
         {
-            get { return m_contentIndex != 0; }
+            get { return ContentIndex != 0; }
         }
 
-        private bool m_flagTestDrop = false;
-        public bool FlagTestDrop
-        {
-            get { return m_flagTestDrop; }
-            set { m_flagTestDrop = value; }
-        }
+        public bool FlagTestDrop { get; set; } = false;
 
         private void SaveOldValues()
         {
-            m_oldDockTo = m_dockTo;
-            m_oldDock = m_dock;
-            m_oldContentIndex = m_contentIndex;
-            m_oldFloatWindowBounds = m_floatWindowBounds;
+            OldDockTo = DockTo;
+            OldDock = Dock;
+            OldContentIndex = ContentIndex;
+            OldFloatWindowBounds = FloatWindowBounds;
         }
 
         protected abstract void OnShow();
@@ -102,19 +65,19 @@ namespace XiaoCai.WinformUI.Docking
 
         private void SetValues(Rectangle floatWindowBounds, Control dockTo, DockStyle dock, int contentIndex)
         {
-            m_floatWindowBounds = floatWindowBounds;
-            m_dockTo = dockTo;
-            m_dock = dock;
-            m_contentIndex = contentIndex;
+            FloatWindowBounds = floatWindowBounds;
+            DockTo = dockTo;
+            Dock = dock;
+            ContentIndex = contentIndex;
             FlagTestDrop = true;
         }
 
         private void TestChange()
         {
-            if (m_floatWindowBounds != m_oldFloatWindowBounds ||
-                m_dockTo != m_oldDockTo ||
-                m_dock != m_oldDock ||
-                m_contentIndex != m_oldContentIndex)
+            if (FloatWindowBounds != OldFloatWindowBounds ||
+                DockTo != OldDockTo ||
+                Dock != OldDock ||
+                ContentIndex != OldContentIndex)
                 OnShow();
         }
 

@@ -28,12 +28,7 @@ namespace XiaoCai.WinformUI.Docking
                 get;
             }
 
-            private Point m_startMousePosition = Point.Empty;
-            protected Point StartMousePosition
-            {
-                get { return m_startMousePosition; }
-                private set { m_startMousePosition = value; }
-            }
+            protected Point StartMousePosition { get; private set; } = Point.Empty;
 
             protected bool BeginDrag()
             {
@@ -98,24 +93,14 @@ namespace XiaoCai.WinformUI.Docking
 
         private abstract class DragHandler : DragHandlerBase
         {
-            private DockPanel m_dockPanel;
-
             protected DragHandler(DockPanel dockPanel)
             {
-                m_dockPanel = dockPanel;
+                DockPanel = dockPanel;
             }
 
-            public DockPanel DockPanel
-            {
-                get { return m_dockPanel; }
-            }
+            public DockPanel DockPanel { get; }
 
-            private IDragSource m_dragSource;
-            protected IDragSource DragSource
-            {
-                get { return m_dragSource; }
-                set { m_dragSource = value; }
-            }
+            protected IDragSource DragSource { get; set; }
 
             protected sealed override Control DragControl
             {

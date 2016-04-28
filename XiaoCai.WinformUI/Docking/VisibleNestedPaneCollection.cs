@@ -8,20 +8,15 @@ namespace XiaoCai.WinformUI.Docking
 {
 	public sealed class VisibleNestedPaneCollection : ReadOnlyCollection<DockPane>
 	{
-		private NestedPaneCollection m_nestedPanes;
-
-        internal VisibleNestedPaneCollection(NestedPaneCollection nestedPanes)
+	    internal VisibleNestedPaneCollection(NestedPaneCollection nestedPanes)
             : base(new List<DockPane>())
         {
-            m_nestedPanes = nestedPanes;
+            NestedPanes = nestedPanes;
         }
 
-		public NestedPaneCollection NestedPanes
-		{
-			get	{	return m_nestedPanes;	}
-		}
+		public NestedPaneCollection NestedPanes { get; }
 
-		public INestedPanesContainer Container
+	    public INestedPanesContainer Container
 		{
 			get	{	return NestedPanes.Container;	}
 		}

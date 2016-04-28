@@ -14,25 +14,15 @@ namespace XiaoCai.WinformUI
     {
         #region Fields
 
-        private bool _autoComplete;
-        private bool _autoDropdown;
-        private Color _backColorEven = Color.White;
-        private Color _backColorOdd = Color.White;
         private string _columnNameString = "";
-        private int _columnWidthDefault = 75;
         private string _columnWidthString = "";
         private int _linkedColumnIndex;
         private TextBox _linkedTextBox;
-        private int _totalWidth;
         private ControlState _buttonState;
-        private readonly Collection<string> _columnNames = new Collection<string>();
-        private readonly Collection<int> _columnWidths = new Collection<int>();
         private Color _baseColor;
         private Color _borderColor;
         private Color _arrowColor;
-        private readonly IntPtr _editHandle = IntPtr.Zero;
         private bool _bPainting;
-        private bool _bShowColumnName;
         //public event System.EventHandler OpenSearchForm;
         //private bool _EscEnabled = false;
         private OfficeColorTable _officeColorTable;
@@ -54,11 +44,7 @@ namespace XiaoCai.WinformUI
         }
 
         [DefaultValue(typeof(bool), "false")]
-        public bool BShowColumnName
-        {
-            get { return _bShowColumnName; }
-            set { _bShowColumnName = value; }
-        }
+        public bool BShowColumnName { get; set; }
 
         [DefaultValue(typeof(Color), "51, 161, 224")]
         public Color BaseColor
@@ -135,10 +121,7 @@ namespace XiaoCai.WinformUI
             }
         }
 
-        internal IntPtr EditHandle
-        {
-            get { return _editHandle; }
-        }
+        internal IntPtr EditHandle { get; } = IntPtr.Zero;
 
         internal Rectangle EditRect
         {
@@ -164,61 +147,15 @@ namespace XiaoCai.WinformUI
             }
         }
 
-        public bool AutoComplete
-        {
-            get
-            {
-                return _autoComplete;
-            }
-            set
-            {
-                _autoComplete = value;
-            }
-        }
+        public bool AutoComplete { get; set; }
 
-        public bool AutoDropdown
-        {
-            get
-            {
-                return _autoDropdown;
-            }
-            set
-            {
-                _autoDropdown = value;
-            }
-        }
+        public bool AutoDropdown { get; set; }
 
-        public Color BackColorEven
-        {
-            get
-            {
-                return _backColorEven;
-            }
-            set
-            {
-                _backColorEven = value;
-            }
-        }
+        public Color BackColorEven { get; set; } = Color.White;
 
-        public Color BackColorOdd
-        {
-            get
-            {
-                return _backColorOdd;
-            }
-            set
-            {
-                _backColorOdd = value;
-            }
-        }
+        public Color BackColorOdd { get; set; } = Color.White;
 
-        public Collection<string> ColumnNameCollection
-        {
-            get
-            {
-                return _columnNames;
-            }
-        }
+        public Collection<string> ColumnNameCollection { get; } = new Collection<string>();
 
         public string ColumnNames
         {
@@ -242,7 +179,7 @@ namespace XiaoCai.WinformUI
 
                     if (!DesignMode)
                     {
-                        _columnNames.Clear();
+                        ColumnNameCollection.Clear();
                     }
 
                     // After splitting the string into an array, iterate
@@ -254,7 +191,7 @@ namespace XiaoCai.WinformUI
                         {
                             if (!DesignMode)
                             {
-                                _columnNames.Add(s.Trim());
+                                ColumnNameCollection.Add(s.Trim());
                             }
                         }
                         else // The value is blank
@@ -267,25 +204,9 @@ namespace XiaoCai.WinformUI
             }
         }
 
-        public Collection<int> ColumnWidthCollection
-        {
-            get
-            {
-                return _columnWidths;
-            }
-        }
+        public Collection<int> ColumnWidthCollection { get; } = new Collection<int>();
 
-        public int ColumnWidthDefault
-        {
-            get
-            {
-                return _columnWidthDefault;
-            }
-            set
-            {
-                _columnWidthDefault = value;
-            }
-        }
+        public int ColumnWidthDefault { get; set; } = 75;
 
         public string ColumnWidths
         {
@@ -354,17 +275,17 @@ namespace XiaoCai.WinformUI
                         // don't exist at design time.
                         if (!DesignMode)
                         {
-                            _columnWidths.Clear();
+                            ColumnWidthCollection.Clear();
                             foreach (string s in columnWidths)
                             {
                                 // Initialize a column width to an integer
                                 if (Convert.ToBoolean(s.Trim().Length))
                                 {
-                                    _columnWidths.Add(Convert.ToInt32(s));
+                                    ColumnWidthCollection.Add(Convert.ToInt32(s));
                                 }
                                 else // Initialize the column to the default
                                 {
-                                    _columnWidths.Add(_columnWidthDefault);
+                                    ColumnWidthCollection.Add(ColumnWidthDefault);
                                 }
                             }
 
@@ -448,13 +369,7 @@ namespace XiaoCai.WinformUI
             }
         }
 
-        public int TotalWidth
-        {
-            get
-            {
-                return _totalWidth;
-            }
-        }
+        public int TotalWidth { get; private set; }
 
         #endregion
 
@@ -483,35 +398,35 @@ namespace XiaoCai.WinformUI
             {
                 PropertyDescriptorCollection propertyDescriptorCollection = DataManager.GetItemProperties();
 
-                _totalWidth = 0;
-                _columnNames.Clear();
+                TotalWidth = 0;
+                ColumnNameCollection.Clear();
 
                 for (int colIndex = 0; colIndex < propertyDescriptorCollection.Count; colIndex++)
                 {
-                    _columnNames.Add(propertyDescriptorCollection[colIndex].Name);
+                    ColumnNameCollection.Add(propertyDescriptorCollection[colIndex].Name);
 
                     // If the index is greater than the collection of explicitly
                     // set column widths, set any additional columns to the default
-                    if (colIndex >= _columnWidths.Count)
+                    if (colIndex >= ColumnWidthCollection.Count)
                     {
-                        _columnWidths.Add(_columnWidthDefault);
+                        ColumnWidthCollection.Add(ColumnWidthDefault);
                     }
-                    _totalWidth += _columnWidths[colIndex];
+                    TotalWidth += ColumnWidthCollection[colIndex];
                 }
             }
             else
             {
-                _totalWidth = 0;
+                TotalWidth = 0;
 
-                for (int colIndex = 0; colIndex < _columnNames.Count; colIndex++)
+                for (int colIndex = 0; colIndex < ColumnNameCollection.Count; colIndex++)
                 {
                     // If the index is greater than the collection of explicitly
                     // set column widths, set any additional columns to the default
-                    if (colIndex >= _columnWidths.Count)
+                    if (colIndex >= ColumnWidthCollection.Count)
                     {
-                        _columnWidths.Add(_columnWidthDefault);
+                        ColumnWidthCollection.Add(ColumnWidthDefault);
                     }
-                    _totalWidth += _columnWidths[colIndex];
+                    TotalWidth += ColumnWidthCollection[colIndex];
                 }
 
             }
@@ -519,7 +434,7 @@ namespace XiaoCai.WinformUI
             // Check to see if the programmer is trying to display a column
             // in the linked textbox that is greater than the columns in the 
             // ComboBox. I handle this error by resetting it to zero.
-            if (_linkedColumnIndex >= _columnNames.Count)
+            if (_linkedColumnIndex >= ColumnNameCollection.Count)
             {
                 _linkedColumnIndex = 0; // Or replace this with an OutOfBounds Exception
             }
@@ -528,7 +443,7 @@ namespace XiaoCai.WinformUI
         private void InitializeValueMemberColumn()
         {
             int colIndex = 0;
-            foreach (String columnName in _columnNames)
+            foreach (String columnName in ColumnNameCollection)
             {
                 if (String.Compare(columnName, ValueMember, true, CultureInfo.CurrentUICulture) == 0)
                 {
@@ -585,7 +500,7 @@ namespace XiaoCai.WinformUI
             base.OnDataSourceChanged(e);
 
             InitializeColumns();
-            if (_bShowColumnName)
+            if (BShowColumnName)
             {
                 this.SelectedIndex = 1;
             }
@@ -594,7 +509,7 @@ namespace XiaoCai.WinformUI
         protected override void OnSelectionChangeCommitted(EventArgs e)
         {
             base.OnSelectionChangeCommitted(e);
-            if (_bShowColumnName)
+            if (BShowColumnName)
             {
                 if (this.SelectedIndex == 0)
                 {
@@ -620,7 +535,7 @@ namespace XiaoCai.WinformUI
             {
                 // Item is not selected. Use BackColorOdd & BackColorEven
                 Color backColor;
-                backColor = Convert.ToBoolean(e.Index % 2) ? _backColorOdd : _backColorEven;
+                backColor = Convert.ToBoolean(e.Index % 2) ? BackColorOdd : BackColorEven;
                 using (SolidBrush brushBackColor = new SolidBrush(backColor))
                 {
                     e.Graphics.FillRectangle(brushBackColor, e.Bounds);
@@ -645,7 +560,7 @@ namespace XiaoCai.WinformUI
                 //brushForeColor = Color.White;
                 brushForeColor = Color.Black;
             }
-            if (_bShowColumnName && e.Index == 0)
+            if (BShowColumnName && e.Index == 0)
             {
                 GraphicsPath pa = new GraphicsPath();
                 StyleHelp.DrawArc(e.Bounds, pa, 6, EGroupPos.None);
@@ -665,7 +580,7 @@ namespace XiaoCai.WinformUI
             {
                 using (SolidBrush brush = new SolidBrush(brushForeColor))
                 {
-                    if (!Convert.ToBoolean(_columnNames.Count))
+                    if (!Convert.ToBoolean(ColumnNameCollection.Count))
                     {
                         e.Graphics.DrawString(Convert.ToString(Items[e.Index]), Font, brush, boundsRect);
                     }
@@ -680,14 +595,14 @@ namespace XiaoCai.WinformUI
                             rtl.FormatFlags = StringFormatFlags.DirectionRightToLeft;
 
                             // Draw the strings in reverse order from high column index to zero column index.
-                            for (int colIndex = _columnNames.Count - 1; colIndex >= 0; colIndex--)
+                            for (int colIndex = ColumnNameCollection.Count - 1; colIndex >= 0; colIndex--)
                             {
-                                if (Convert.ToBoolean(_columnWidths[colIndex]))
+                                if (Convert.ToBoolean(ColumnWidthCollection[colIndex]))
                                 {
-                                    string item = Convert.ToString(FilterItemOnProperty(Items[e.Index], _columnNames[colIndex]));
+                                    string item = Convert.ToString(FilterItemOnProperty(Items[e.Index], ColumnNameCollection[colIndex]));
 
                                     boundsRect.X = lastRight;
-                                    boundsRect.Width = (int)_columnWidths[colIndex];
+                                    boundsRect.Width = (int)ColumnWidthCollection[colIndex];
                                     lastRight = boundsRect.Right;
 
                                     // Draw the string with the RTL object.
@@ -704,18 +619,18 @@ namespace XiaoCai.WinformUI
                         else
                         {
                             // Display the strings in ascending order from zero to the highest column.
-                            for (int colIndex = 0; colIndex < _columnNames.Count; colIndex++)
+                            for (int colIndex = 0; colIndex < ColumnNameCollection.Count; colIndex++)
                             {
-                                if (Convert.ToBoolean(_columnWidths[colIndex]))
+                                if (Convert.ToBoolean(ColumnWidthCollection[colIndex]))
                                 {
-                                    string item = Convert.ToString(FilterItemOnProperty(Items[e.Index], _columnNames[colIndex]));
+                                    string item = Convert.ToString(FilterItemOnProperty(Items[e.Index], ColumnNameCollection[colIndex]));
 
                                     boundsRect.X = lastRight;
-                                    boundsRect.Width = (int)_columnWidths[colIndex];
+                                    boundsRect.Width = (int)ColumnWidthCollection[colIndex];
                                     lastRight = boundsRect.Right;
                                     e.Graphics.DrawString(item, Font, brush, boundsRect);
 
-                                    if (colIndex < _columnNames.Count - 1)
+                                    if (colIndex < ColumnNameCollection.Count - 1)
                                     {
                                         e.Graphics.DrawLine(linePen, boundsRect.Right, boundsRect.Top, boundsRect.Right, boundsRect.Bottom);
                                     }
@@ -733,17 +648,17 @@ namespace XiaoCai.WinformUI
         {
             base.OnDropDown(e);
 
-            if (_totalWidth > 0)
+            if (TotalWidth > 0)
             {
                 if (Items.Count > MaxDropDownItems)
                 {
                     // The vertical scrollbar is present. Add its width to the total.
                     // If you don't then RightToLeft languages will have a few characters obscured.
-                    this.DropDownWidth = _totalWidth + SystemInformation.VerticalScrollBarWidth;
+                    this.DropDownWidth = TotalWidth + SystemInformation.VerticalScrollBarWidth;
                 }
                 else
                 {
-                    this.DropDownWidth = _totalWidth;
+                    this.DropDownWidth = TotalWidth;
                 }
             }
         }
@@ -785,10 +700,10 @@ namespace XiaoCai.WinformUI
             int idx = -1;
             string toFind;
 
-            DroppedDown = _autoDropdown;
+            DroppedDown = AutoDropdown;
             if (!Char.IsControl(e.KeyChar))
             {
-                if (_autoComplete)
+                if (AutoComplete)
                 {
                     toFind = Text.Substring(0, SelectionStart) + e.KeyChar;
                     idx = FindStringExact(toFind);
@@ -833,7 +748,7 @@ namespace XiaoCai.WinformUI
             // a left arrow instead. The user must not be allowed to change the 
             // value in the ComboBox. 
             if ((e.KeyChar == (char)(Keys.Back)) &&  // A Backspace Key is hit
-                (_autoComplete) &&                   // AutoComplete = true
+                (AutoComplete) &&                   // AutoComplete = true
                 (Convert.ToBoolean(SelectionStart))) // And the SelectionStart is positive
             {
                 // Find a substring that is one character less the the current selection.
@@ -862,9 +777,9 @@ namespace XiaoCai.WinformUI
 
             if (_linkedTextBox != null)
             {
-                if (_linkedColumnIndex < _columnNames.Count)
+                if (_linkedColumnIndex < ColumnNameCollection.Count)
                 {
-                    _linkedTextBox.Text = Convert.ToString(FilterItemOnProperty(SelectedItem, _columnNames[_linkedColumnIndex]));
+                    _linkedTextBox.Text = Convert.ToString(FilterItemOnProperty(SelectedItem, ColumnNameCollection[_linkedColumnIndex]));
                 }
             }
             ButtonState = ControlState.Normal;

@@ -10,7 +10,7 @@ namespace XiaoCai.WinformUI.Docking
 	{
 		protected internal DockPaneCaptionBase(DockPane pane)
 		{
-			m_dockPane = pane;
+			DockPane = pane;
 
 			SetStyle(ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw |
@@ -19,13 +19,9 @@ namespace XiaoCai.WinformUI.Docking
 			SetStyle(ControlStyles.Selectable, false);
 		}
 
-		private DockPane m_dockPane;
-		protected DockPane DockPane
-		{
-			get	{	return m_dockPane;	}
-		}
+	    protected DockPane DockPane { get; }
 
-		protected DockPane.AppearanceStyle Appearance
+	    protected DockPane.AppearanceStyle Appearance
 		{
 			get	{	return DockPane.Appearance;	}
 		}

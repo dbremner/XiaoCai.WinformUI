@@ -4,16 +4,11 @@ namespace XiaoCai.WinformUI.Docking
 {
 	public class DockContentEventArgs : EventArgs
 	{
-		private IDockContent m_content;
-
-		public DockContentEventArgs(IDockContent content)
+	    public DockContentEventArgs(IDockContent content)
 		{
-			m_content = content;
+			Content = content;
 		}
 
-		public IDockContent Content
-		{
-			get	{	return m_content;	}
-		}
+		public IDockContent Content { get; }
 	}
 }

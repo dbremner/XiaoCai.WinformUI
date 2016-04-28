@@ -38,19 +38,11 @@ namespace XiaoCai.WinformUI.Docking
 			}
 		}
 
-		private DockPaneCaptionBase m_captionControl;
-		private DockPaneCaptionBase CaptionControl
-		{
-			get	{	return m_captionControl;	}
-		}
+	    private DockPaneCaptionBase CaptionControl { get; set; }
 
-		private DockPaneStripBase m_tabStripControl;
-		internal DockPaneStripBase TabStripControl
-		{
-			get	{	return m_tabStripControl;	}
-		}
+	    internal DockPaneStripBase TabStripControl { get; private set; }
 
-		internal protected DockPane(IDockContent content, DockState visibleState, bool show)
+	    internal protected DockPane(IDockContent content, DockState visibleState, bool show)
 		{
 			InternalConstruct(content, visibleState, false, Rectangle.Empty, null, DockAlignment.Right, 0.5, show);
 		}
@@ -92,20 +84,20 @@ namespace XiaoCai.WinformUI.Docking
 			SuspendLayout();
 			SetStyle(ControlStyles.Selectable, false);
 
-			m_isFloat = (dockState == DockState.Float);
+			IsFloat = (dockState == DockState.Float);
 
-			m_contents = new DockContentCollection();
-			m_displayingContents = new DockContentCollection(this);
-			m_dockPanel = content.DockHandler.DockPanel;
-			m_dockPanel.AddPane(this);
+			Contents = new DockContentCollection();
+			DisplayingContents = new DockContentCollection(this);
+			DockPanel = content.DockHandler.DockPanel;
+			DockPanel.AddPane(this);
 
-			m_splitter = new SplitterControl(this);
+			Splitter = new SplitterControl(this);
 
-			m_nestedDockingStatus = new NestedDockingStatus(this);
+			NestedDockingStatus = new NestedDockingStatus(this);
 
-			m_captionControl = DockPanel.DockPaneCaptionFactory.CreateDockPaneCaption(this);
-			m_tabStripControl = DockPanel.DockPaneStripFactory.CreateDockPaneStrip(this);
-			Controls.AddRange(new Control[] {	m_captionControl, m_tabStripControl	});
+			CaptionControl = DockPanel.DockPaneCaptionFactory.CreateDockPaneCaption(this);
+			TabStripControl = DockPanel.DockPaneStripFactory.CreateDockPaneStrip(this);
+			Controls.AddRange(new Control[] {	CaptionControl, TabStripControl	});
 			
 			DockPanel.SuspendLayout(true);
 			if (flagBounds)
@@ -137,12 +129,12 @@ namespace XiaoCai.WinformUI.Docking
 				if (DockPanel != null)
 				{
 					DockPanel.RemovePane(this);
-					m_dockPanel = null;
+					DockPanel = null;
 				}
 
 				Splitter.Dispose();
-                if (m_autoHidePane != null)
-				    m_autoHidePane.Dispose();
+                if (AutoHidePane != null)
+				    AutoHidePane.Dispose();
 			}
 			base.Dispose(disposing);
 		}
@@ -202,29 +194,14 @@ namespace XiaoCai.WinformUI.Docking
 					TabStripControl.EnsureTabVisible(m_activeContent);
 			}
 		}
-		
-		private bool m_allowDockDragAndDrop = true;
-		public virtual bool AllowDockDragAndDrop
-		{
-			get	{	return m_allowDockDragAndDrop;	}
-			set	{	m_allowDockDragAndDrop = value;	}
-		}
 
-        private IDisposable m_autoHidePane = null;
-        internal IDisposable AutoHidePane
-        {
-            get { return m_autoHidePane; }
-            set { m_autoHidePane = value; }
-        }
+	    public virtual bool AllowDockDragAndDrop { get; set; } = true;
 
-        private object m_autoHideTabs = null;
-        internal object AutoHideTabs
-        {
-            get { return m_autoHideTabs; }
-            set { m_autoHideTabs = value; }
-        }
+	    internal IDisposable AutoHidePane { get; set; } = null;
 
-        private object TabPageContextMenu
+	    internal object AutoHideTabs { get; set; } = null;
+
+	    private object TabPageContextMenu
         {
             get
             {
@@ -359,25 +336,13 @@ namespace XiaoCai.WinformUI.Docking
 			get	{	return ActiveContent == null ? string.Empty : ActiveContent.DockHandler.TabText;	}
 		}
 
-		private DockContentCollection m_contents;
-		public DockContentCollection Contents
-		{
-			get	{	return m_contents;	}
-		}
+	    public DockContentCollection Contents { get; private set; }
 
-		private DockContentCollection m_displayingContents;
-		public DockContentCollection DisplayingContents
-		{
-			get	{	return m_displayingContents;	}
-		}
+	    public DockContentCollection DisplayingContents { get; private set; }
 
-		private DockPanel m_dockPanel;
-		public DockPanel DockPanel
-		{
-			get	{	return m_dockPanel;	}
-		}
+	    public DockPanel DockPanel { get; private set; }
 
-		private bool HasCaption
+	    private bool HasCaption
 		{
 			get
 			{	
@@ -391,33 +356,27 @@ namespace XiaoCai.WinformUI.Docking
 			}
 		}
 
-		private bool m_isActivated = false;
-		public bool IsActivated
+	    public bool IsActivated { get; private set; } = false;
+
+	    internal void SetIsActivated(bool value)
 		{
-			get	{	return m_isActivated;	}
-		}
-		internal void SetIsActivated(bool value)
-		{
-			if (m_isActivated == value)
+			if (IsActivated == value)
 				return;
 
-			m_isActivated = value;
+			IsActivated = value;
 			if (DockState != DockState.Document)
 				RefreshChanges(false);
 			OnIsActivatedChanged(EventArgs.Empty);
 		}
 
-		private bool m_isActiveDocumentPane = false;
-		public bool IsActiveDocumentPane
+	    public bool IsActiveDocumentPane { get; private set; } = false;
+
+	    internal void SetIsActiveDocumentPane(bool value)
 		{
-			get	{	return m_isActiveDocumentPane;	}
-		}
-		internal void SetIsActiveDocumentPane(bool value)
-		{
-			if (m_isActiveDocumentPane == value)
+			if (IsActiveDocumentPane == value)
 				return;
 
-			m_isActiveDocumentPane = value;
+			IsActiveDocumentPane = value;
 			if (DockState == DockState.Document)
 				RefreshChanges();
 			OnIsActiveDocumentPaneChanged(EventArgs.Empty);
@@ -511,17 +470,14 @@ namespace XiaoCai.WinformUI.Docking
 			return new HitTestResult(HitTestArea.None, -1);
 		}
 
-		private bool m_isHidden = true;
-		public bool IsHidden
+	    public bool IsHidden { get; private set; } = true;
+
+	    private void SetIsHidden(bool value)
 		{
-			get	{	return m_isHidden;	}
-		}
-		private void SetIsHidden(bool value)
-		{
-			if (m_isHidden == value)
+			if (IsHidden == value)
 				return;
 
-			m_isHidden = value;
+			IsHidden = value;
 			if (DockHelper.IsDockStateAutoHide(DockState))
 			{
 				DockPanel.RefreshAutoHideStrip();
@@ -776,7 +732,7 @@ namespace XiaoCai.WinformUI.Docking
 
 		public DockWindow DockWindow
 		{
-			get	{	return (m_nestedDockingStatus.NestedPanes == null) ? null : m_nestedDockingStatus.NestedPanes.Container as DockWindow;	}
+			get	{	return (NestedDockingStatus.NestedPanes == null) ? null : NestedDockingStatus.NestedPanes.Container as DockWindow;	}
 			set
 			{
 				DockWindow oldValue = DockWindow;
@@ -789,7 +745,7 @@ namespace XiaoCai.WinformUI.Docking
 
 		public FloatWindow FloatWindow
 		{
-			get	{	return (m_nestedDockingStatus.NestedPanes == null) ? null : m_nestedDockingStatus.NestedPanes.Container as FloatWindow;	}
+			get	{	return (NestedDockingStatus.NestedPanes == null) ? null : NestedDockingStatus.NestedPanes.Container as FloatWindow;	}
 			set
 			{
 				FloatWindow oldValue = FloatWindow;
@@ -800,19 +756,11 @@ namespace XiaoCai.WinformUI.Docking
 			}
 		}
 
-		private NestedDockingStatus m_nestedDockingStatus;
-		public NestedDockingStatus NestedDockingStatus
-		{
-			get	{	return m_nestedDockingStatus;	}
-		}
-	
-		private bool m_isFloat;
-		public bool IsFloat
-		{
-			get	{	return m_isFloat;	}
-		}
+	    public NestedDockingStatus NestedDockingStatus { get; private set; }
 
-		public INestedPanesContainer NestedPanesContainer
+	    public bool IsFloat { get; private set; }
+
+	    public INestedPanesContainer NestedPanesContainer
 		{
 			get
 			{

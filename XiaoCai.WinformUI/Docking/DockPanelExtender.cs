@@ -115,16 +115,12 @@ namespace XiaoCai.WinformUI.Docking
 
 		internal DockPanelExtender(DockPanel dockPanel)
 		{
-			m_dockPanel = dockPanel;
+			DockPanel = dockPanel;
 		}
 
-		private DockPanel m_dockPanel;
-		private DockPanel DockPanel
-		{
-			get	{	return m_dockPanel;	}
-		}
+	    private DockPanel DockPanel { get; }
 
-		private IDockPaneFactory m_dockPaneFactory = null;
+	    private IDockPaneFactory m_dockPaneFactory = null;
 		public IDockPaneFactory DockPaneFactory
 		{
 			get

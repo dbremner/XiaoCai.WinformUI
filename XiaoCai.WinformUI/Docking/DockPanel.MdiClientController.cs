@@ -15,7 +15,6 @@ namespace XiaoCai.WinformUI.Docking
         {
             private bool m_autoScroll = true;
             private BorderStyle m_borderStyle = BorderStyle.Fixed3D;
-            private MdiClient m_mdiClient = null;
             private Form m_parentForm = null;
             private ISite m_site = null;
 
@@ -119,10 +118,7 @@ namespace XiaoCai.WinformUI.Docking
                 }
             }
 
-            public MdiClient MdiClient
-            {
-                get { return m_mdiClient; }
-            }
+            public MdiClient MdiClient { get; private set; } = null;
 
             [Browsable(false)]
             public Form ParentForm
@@ -261,10 +257,10 @@ namespace XiaoCai.WinformUI.Docking
             {
                 // If the MdiClient handle has been released, drop the reference and
                 // release the handle.
-                if (m_mdiClient != null)
+                if (MdiClient != null)
                 {
-                    m_mdiClient.HandleDestroyed -= new EventHandler(MdiClientHandleDestroyed);
-                    m_mdiClient = null;
+                    MdiClient.HandleDestroyed -= new EventHandler(MdiClientHandleDestroyed);
+                    MdiClient = null;
                 }
 
                 ReleaseHandle();
@@ -289,8 +285,8 @@ namespace XiaoCai.WinformUI.Docking
                     // If the form is an MDI container, it will contain an MdiClient control
                     // just as it would any other control.
 
-                    m_mdiClient = control as MdiClient;
-                    if (m_mdiClient == null)
+                    MdiClient = control as MdiClient;
+                    if (MdiClient == null)
                         continue;
 
                     // Assign the MdiClient Handle to the NativeWindow.

@@ -9,18 +9,13 @@ namespace XiaoCai.WinformUI.Panels
     {
         #region FieldsPrivate
 
-        private PanelStyle m_ePanelStyle;
-
         #endregion
 
         #region Properties
         /// <summary>
         /// Gets the style of the panel.
         /// </summary>
-        public PanelStyle PanelStyle
-        {
-            get { return this.m_ePanelStyle; }
-        }
+        public PanelStyle PanelStyle { get; }
 
         #endregion
 
@@ -31,7 +26,7 @@ namespace XiaoCai.WinformUI.Panels
         /// <param name="ePanelStyle">the style of the panel.</param>
         public PanelStyleChangeEventArgs(PanelStyle ePanelStyle)
         {
-            this.m_ePanelStyle = ePanelStyle;
+            this.PanelStyle = ePanelStyle;
         }
 
         #endregion

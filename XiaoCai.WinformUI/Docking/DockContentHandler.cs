@@ -19,10 +19,10 @@ namespace XiaoCai.WinformUI.Docking
 			if (!(form is IDockContent))
                 throw new ArgumentException(XiaoCai.WinformUI.Properties.Resources.DockContent_Constructor_InvalidForm, "form");
 
-			m_form = form;
-			m_getPersistStringCallback = getPersistStringCallback;
+			Form = form;
+			GetPersistStringCallback = getPersistStringCallback;
 
-			m_events = new EventHandlerList();
+			Events = new EventHandlerList();
 			Form.Disposed +=new EventHandler(Form_Disposed);
 			Form.TextChanged += new EventHandler(Form_TextChanged);
 		}
@@ -40,57 +40,34 @@ namespace XiaoCai.WinformUI.Docking
 				lock(this)
 				{
 					DockPanel = null;
-					if (m_autoHideTab != null)
-						m_autoHideTab.Dispose();
+					if (AutoHideTab != null)
+						AutoHideTab.Dispose();
 					if (m_tab != null)
 						m_tab.Dispose();
 
 					Form.Disposed -= new EventHandler(Form_Disposed);
 					Form.TextChanged -= new EventHandler(Form_TextChanged);
-					m_events.Dispose();
+					Events.Dispose();
 				}
 			}
 		}
 
-		private Form m_form;
-		public Form Form
-		{
-			get	{	return m_form;	}
-		}
+	    public Form Form { get; }
 
-		public IDockContent Content
+	    public IDockContent Content
 		{
 			get	{	return Form as IDockContent;	}
 		}
 
-        private IDockContent m_previousActive = null;
-        public IDockContent PreviousActive
-        {
-            get { return m_previousActive; }
-            internal set { m_previousActive = value; }
-        }
+	    public IDockContent PreviousActive { get; internal set; } = null;
 
-        private IDockContent m_nextActive = null;
-        public IDockContent NextActive
-        {
-            get { return m_nextActive; }
-            internal set { m_nextActive = value; }
-        }
+	    public IDockContent NextActive { get; internal set; } = null;
 
-		private EventHandlerList m_events;
-		private EventHandlerList Events
-		{
-			get	{	return m_events;	}
-		}
+	    private EventHandlerList Events { get; }
 
-		private bool m_allowEndUserDocking = true;
-		public bool AllowEndUserDocking
-		{
-			get	{	return m_allowEndUserDocking;	}
-			set	{	m_allowEndUserDocking = value;	}
-		}
+	    public bool AllowEndUserDocking { get; set; } = true;
 
-		private double m_autoHidePortion = 0.25;
+	    private double m_autoHidePortion = 0.25;
 		public double AutoHidePortion
 		{
 			get	{	return m_autoHidePortion;	}
@@ -233,10 +210,10 @@ namespace XiaoCai.WinformUI.Docking
 					m_tab = null;
 				}
 
-				if (m_autoHideTab != null)
+				if (AutoHideTab != null)
 				{
-					m_autoHideTab.Dispose();
-					m_autoHideTab = null;
+					AutoHideTab.Dispose();
+					AutoHideTab = null;
 				}
 
 				m_dockPanel = value;
@@ -544,22 +521,12 @@ namespace XiaoCai.WinformUI.Docking
 			get	{	return GetPersistStringCallback == null ? Form.GetType().ToString() : GetPersistStringCallback();	}
 		}
 
-		private GetPersistStringCallback m_getPersistStringCallback = null;
-		public GetPersistStringCallback GetPersistStringCallback
-		{
-			get	{	return m_getPersistStringCallback;	}
-			set	{	m_getPersistStringCallback = value;	}
-		}
+	    public GetPersistStringCallback GetPersistStringCallback { get; set; } = null;
 
 
-		private bool m_hideOnClose = false;
-		public bool HideOnClose
-		{
-			get	{	return m_hideOnClose;	}
-			set	{	m_hideOnClose = value;	}
-		}
+	    public bool HideOnClose { get; set; } = false;
 
-		private DockState m_showHint = DockState.Unknown;
+	    private DockState m_showHint = DockState.Unknown;
 		public DockState ShowHint
 		{
 			get	{	return m_showHint;	}
@@ -596,21 +563,11 @@ namespace XiaoCai.WinformUI.Docking
 				return DockHelper.IsDockStateValid(dockState, DockAreas);
 		}
 
-		private ContextMenu m_tabPageContextMenu = null;
-		public ContextMenu TabPageContextMenu
-		{
-			get	{	return m_tabPageContextMenu;	}
-			set	{	m_tabPageContextMenu = value;	}
-		}
+	    public ContextMenu TabPageContextMenu { get; set; } = null;
 
-		private string m_toolTipText = null;
-		public string ToolTipText
-		{
-			get	{	return m_toolTipText;	}
-			set {	m_toolTipText = value;	}
-		}
+	    public string ToolTipText { get; set; } = null;
 
-		public void Activate()
+	    public void Activate()
 		{
 			if (DockPanel == null)
 				Form.Activate();
@@ -638,14 +595,9 @@ namespace XiaoCai.WinformUI.Docking
             DockPanel.ContentFocusManager.GiveUpFocus(Content);
         }
 
-		private IntPtr m_activeWindowHandle = IntPtr.Zero;
-		internal IntPtr ActiveWindowHandle
-		{
-			get	{	return m_activeWindowHandle;	}
-			set	{	m_activeWindowHandle = value;	}
-		}
+	    internal IntPtr ActiveWindowHandle { get; set; } = IntPtr.Zero;
 
-		public void Hide()
+	    public void Hide()
 		{
 			IsHidden = true;
 		}
@@ -867,14 +819,9 @@ namespace XiaoCai.WinformUI.Docking
             return m_tab;
 		}
 
-		private IDisposable m_autoHideTab = null;
-		internal IDisposable AutoHideTab
-		{
-            get { return m_autoHideTab; }
-            set { m_autoHideTab = value; }
-		}
+	    internal IDisposable AutoHideTab { get; set; } = null;
 
-		#region Events
+	    #region Events
 		private static readonly object DockStateChangedEvent = new object();
 		public event EventHandler DockStateChanged
 		{
@@ -923,14 +870,9 @@ namespace XiaoCai.WinformUI.Docking
 			}
 		}
 
-        private ContextMenuStrip m_tabPageContextMenuStrip = null;
-        public ContextMenuStrip TabPageContextMenuStrip
-        {
-            get { return m_tabPageContextMenuStrip; }
-            set { m_tabPageContextMenuStrip = value; }
-        }
+	    public ContextMenuStrip TabPageContextMenuStrip { get; set; } = null;
 
-        #region IDockDragSource Members
+	    #region IDockDragSource Members
 
         Control IDragSource.DragControl
         {

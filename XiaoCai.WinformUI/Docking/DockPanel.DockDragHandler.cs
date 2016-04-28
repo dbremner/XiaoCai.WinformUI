@@ -39,16 +39,12 @@ namespace XiaoCai.WinformUI.Docking
 
                     public PanelIndicator(DockStyle dockStyle)
                     {
-                        m_dockStyle = dockStyle;
+                        DockStyle = dockStyle;
                         SizeMode = PictureBoxSizeMode.AutoSize;
                         Image = ImageInactive;
                     }
 
-                    private DockStyle m_dockStyle;
-                    private DockStyle DockStyle
-                    {
-                        get { return m_dockStyle; }
-                    }
+                    private DockStyle DockStyle { get; }
 
                     private DockStyle m_status;
                     public DockStyle Status
@@ -130,28 +126,16 @@ namespace XiaoCai.WinformUI.Docking
                     {
                         public HotSpotIndex(int x, int y, DockStyle dockStyle)
                         {
-                            m_x = x;
-                            m_y = y;
-                            m_dockStyle = dockStyle;
+                            X = x;
+                            Y = y;
+                            DockStyle = dockStyle;
                         }
 
-                        private int m_x;
-                        public int X
-                        {
-                            get { return m_x; }
-                        }
+                        public int X { get; }
 
-                        private int m_y;
-                        public int Y
-                        {
-                            get { return m_y; }
-                        }
+                        public int Y { get; }
 
-                        private DockStyle m_dockStyle;
-                        public DockStyle DockStyle
-                        {
-                            get { return m_dockStyle; }
-                        }
+                        public DockStyle DockStyle { get; }
                     }
 
                     private static Bitmap _bitmapPaneDiamond = Resources.DockIndicator_PaneDiamond;
@@ -174,7 +158,6 @@ namespace XiaoCai.WinformUI.Docking
 				new HotSpotIndex(2, 1, DockStyle.Right),
 				new HotSpotIndex(1, 2, DockStyle.Bottom)
 			};
-                    private static GraphicsPath _displayingGraphicsPath = DrawHelper.CalculateGraphicsPathFromBitmap(_bitmapPaneDiamond);
 
                     public PaneIndicator()
                     {
@@ -183,10 +166,7 @@ namespace XiaoCai.WinformUI.Docking
                         Region = new Region(DisplayingGraphicsPath);
                     }
 
-                    public static GraphicsPath DisplayingGraphicsPath
-                    {
-                        get { return _displayingGraphicsPath; }
-                    }
+                    public static GraphicsPath DisplayingGraphicsPath { get; } = DrawHelper.CalculateGraphicsPathFromBitmap(_bitmapPaneDiamond);
 
                     public DockStyle HitTest(Point pt)
                     {

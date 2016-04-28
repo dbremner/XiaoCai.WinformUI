@@ -11,18 +11,14 @@ namespace XiaoCai.WinformUI.Docking
 	{
 		public DockContent()
 		{
-			m_dockHandler = new DockContentHandler(this, new GetPersistStringCallback(GetPersistString));
-			m_dockHandler.DockStateChanged += new EventHandler(DockHandler_DockStateChanged);
+			DockHandler = new DockContentHandler(this, new GetPersistStringCallback(GetPersistString));
+			DockHandler.DockStateChanged += new EventHandler(DockHandler_DockStateChanged);
 		}
 
-		private DockContentHandler m_dockHandler = null;
-		[Browsable(false)]
-		public DockContentHandler DockHandler
-		{
-			get	{	return m_dockHandler;	}
-		}
+	    [Browsable(false)]
+		public DockContentHandler DockHandler { get; } = null;
 
-		[LocalizedCategory("Category_Docking")]
+	    [LocalizedCategory("Category_Docking")]
 		[LocalizedDescription("DockContent_AllowEndUserDocking_Description")]
 		[DefaultValue(true)]
 		public bool AllowEndUserDocking

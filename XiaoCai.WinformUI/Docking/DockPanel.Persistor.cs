@@ -23,188 +23,68 @@ namespace XiaoCai.WinformUI.Docking
 
             private struct DockPanelStruct
             {
-                private double m_dockLeftPortion;
-                public double DockLeftPortion
-                {
-                    get { return m_dockLeftPortion; }
-                    set { m_dockLeftPortion = value; }
-                }
+                public double DockLeftPortion { get; set; }
 
-                private double m_dockRightPortion;
-                public double DockRightPortion
-                {
-                    get { return m_dockRightPortion; }
-                    set { m_dockRightPortion = value; }
-                }
+                public double DockRightPortion { get; set; }
 
-                private double m_dockTopPortion;
-                public double DockTopPortion
-                {
-                    get { return m_dockTopPortion; }
-                    set { m_dockTopPortion = value; }
-                }
+                public double DockTopPortion { get; set; }
 
-                private double m_dockBottomPortion;
-                public double DockBottomPortion
-                {
-                    get { return m_dockBottomPortion; }
-                    set { m_dockBottomPortion = value; }
-                }
+                public double DockBottomPortion { get; set; }
 
-                private int m_indexActiveDocumentPane;
-                public int IndexActiveDocumentPane
-                {
-                    get { return m_indexActiveDocumentPane; }
-                    set { m_indexActiveDocumentPane = value; }
-                }
+                public int IndexActiveDocumentPane { get; set; }
 
-                private int m_indexActivePane;
-                public int IndexActivePane
-                {
-                    get { return m_indexActivePane; }
-                    set { m_indexActivePane = value; }
-                }
+                public int IndexActivePane { get; set; }
             }
 
             private struct ContentStruct
             {
-                private string m_persistString;
-                public string PersistString
-                {
-                    get { return m_persistString; }
-                    set { m_persistString = value; }
-                }
+                public string PersistString { get; set; }
 
-                private double m_autoHidePortion;
-                public double AutoHidePortion
-                {
-                    get { return m_autoHidePortion; }
-                    set { m_autoHidePortion = value; }
-                }
+                public double AutoHidePortion { get; set; }
 
-                private bool m_isHidden;
-                public bool IsHidden
-                {
-                    get { return m_isHidden; }
-                    set { m_isHidden = value; }
-                }
+                public bool IsHidden { get; set; }
 
-                private bool m_isFloat;
-                public bool IsFloat
-                {
-                    get { return m_isFloat; }
-                    set { m_isFloat = value; }
-                }
+                public bool IsFloat { get; set; }
             }
 
             private struct PaneStruct
             {
-                private DockState m_dockState;
-                public DockState DockState
-                {
-                    get { return m_dockState; }
-                    set { m_dockState = value; }
-                }
+                public DockState DockState { get; set; }
 
-                private int m_indexActiveContent;
-                public int IndexActiveContent
-                {
-                    get { return m_indexActiveContent; }
-                    set { m_indexActiveContent = value; }
-                }
+                public int IndexActiveContent { get; set; }
 
-                private int[] m_indexContents;
-                public int[] IndexContents
-                {
-                    get { return m_indexContents; }
-                    set { m_indexContents = value; }
-                }
+                public int[] IndexContents { get; set; }
 
-                private int m_zOrderIndex;
-                public int ZOrderIndex
-                {
-                    get { return m_zOrderIndex; }
-                    set { m_zOrderIndex = value; }
-                }
+                public int ZOrderIndex { get; set; }
             }
 
             private struct NestedPane
             {
-                private int m_indexPane;
-                public int IndexPane
-                {
-                    get { return m_indexPane; }
-                    set { m_indexPane = value; }
-                }
+                public int IndexPane { get; set; }
 
-                private int m_indexPrevPane;
-                public int IndexPrevPane
-                {
-                    get { return m_indexPrevPane; }
-                    set { m_indexPrevPane = value; }
-                }
+                public int IndexPrevPane { get; set; }
 
-                private DockAlignment m_alignment;
-                public DockAlignment Alignment
-                {
-                    get { return m_alignment; }
-                    set { m_alignment = value; }
-                }
+                public DockAlignment Alignment { get; set; }
 
-                private double m_proportion;
-                public double Proportion
-                {
-                    get { return m_proportion; }
-                    set { m_proportion = value; }
-                }
+                public double Proportion { get; set; }
             }
 
             private struct DockWindowStruct
             {
-                private DockState m_dockState;
-                public DockState DockState
-                {
-                    get { return m_dockState; }
-                    set { m_dockState = value; }
-                }
+                public DockState DockState { get; set; }
 
-                private int m_zOrderIndex;
-                public int ZOrderIndex
-                {
-                    get { return m_zOrderIndex; }
-                    set { m_zOrderIndex = value; }
-                }
+                public int ZOrderIndex { get; set; }
 
-                private NestedPane[] m_nestedPanes;
-                public NestedPane[] NestedPanes
-                {
-                    get { return m_nestedPanes; }
-                    set { m_nestedPanes = value; }
-                }
+                public NestedPane[] NestedPanes { get; set; }
             }
 
             private struct FloatWindowStruct
             {
-                private Rectangle m_bounds;
-                public Rectangle Bounds
-                {
-                    get { return m_bounds; }
-                    set { m_bounds = value; }
-                }
+                public Rectangle Bounds { get; set; }
 
-                private int m_zOrderIndex;
-                public int ZOrderIndex
-                {
-                    get { return m_zOrderIndex; }
-                    set { m_zOrderIndex = value; }
-                }
+                public int ZOrderIndex { get; set; }
 
-                private NestedPane[] m_nestedPanes;
-                public NestedPane[] NestedPanes
-                {
-                    get { return m_nestedPanes; }
-                    set { m_nestedPanes = value; }
-                }
+                public NestedPane[] NestedPanes { get; set; }
             }
 
             public static void SaveAsXml(DockPanel dockPanel, string fileName)

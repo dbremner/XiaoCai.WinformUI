@@ -9,14 +9,9 @@ namespace XiaoCai.WinformUI
 {
     public partial class CheckBoxW : CheckBox, IStyle
     {
-        private bool _useStyle;
         private Color _borderColor;
         private OfficeColorTable _officeColorTable;
-        public bool UseStyle
-        {
-            get { return _useStyle; }
-            set { _useStyle = value; }
-        }
+        public bool UseStyle { get; set; }
 
         [DefaultValue(typeof(Color), "51, 161, 224")]
         public Color BorderColor
@@ -34,7 +29,7 @@ namespace XiaoCai.WinformUI
         #region IStyle 成员
         public void SetStyle(Style style)
         {
-            if (_useStyle)
+            if (UseStyle)
             {
                 _officeColorTable = StyleBuilderFactory.GetOffice2007ColorTable(style);
                 this.BaseColor = _officeColorTable.CheckBoxBaseColor;

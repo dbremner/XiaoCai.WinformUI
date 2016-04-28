@@ -13,11 +13,9 @@ namespace XiaoCai.WinformUI.Docking
         [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         protected class Tab : IDisposable
         {
-            private IDockContent m_content;
-
             protected internal Tab(IDockContent content)
             {
-                m_content = content;
+                Content = content;
             }
 
             ~Tab()
@@ -25,10 +23,7 @@ namespace XiaoCai.WinformUI.Docking
                 Dispose(false);
             }
 
-            public IDockContent Content
-            {
-                get { return m_content; }
-            }
+            public IDockContent Content { get; }
 
             public void Dispose()
             {
@@ -60,14 +55,10 @@ namespace XiaoCai.WinformUI.Docking
 
             internal TabCollection(DockPane pane)
             {
-                m_dockPane = pane;
+                DockPane = pane;
             }
 
-            private DockPane m_dockPane = null;
-            public DockPane DockPane
-            {
-                get { return m_dockPane; }
-            }
+            public DockPane DockPane { get; } = null;
 
             public DockPanel DockPanel
             {
@@ -119,11 +110,9 @@ namespace XiaoCai.WinformUI.Docking
         [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         protected class Pane : IDisposable
         {
-            private DockPane m_dockPane;
-
             protected internal Pane(DockPane dockPane)
             {
-                m_dockPane = dockPane;
+                DockPane = dockPane;
             }
 
             ~Pane()
@@ -131,10 +120,7 @@ namespace XiaoCai.WinformUI.Docking
                 Dispose(false);
             }
 
-            public DockPane DockPane
-            {
-                get { return m_dockPane; }
-            }
+            public DockPane DockPane { get; }
 
             public TabCollection AutoHideTabs
             {
@@ -225,25 +211,17 @@ namespace XiaoCai.WinformUI.Docking
 
             internal PaneCollection(DockPanel panel, DockState dockState)
             {
-                m_dockPanel = panel;
-                m_states = new AutoHideStateCollection();
+                DockPanel = panel;
+                States = new AutoHideStateCollection();
                 States[DockState.DockTopAutoHide].Selected = (dockState == DockState.DockTopAutoHide);
                 States[DockState.DockBottomAutoHide].Selected = (dockState == DockState.DockBottomAutoHide);
                 States[DockState.DockLeftAutoHide].Selected = (dockState == DockState.DockLeftAutoHide);
                 States[DockState.DockRightAutoHide].Selected = (dockState == DockState.DockRightAutoHide);
             }
 
-            private DockPanel m_dockPanel;
-            public DockPanel DockPanel
-            {
-                get { return m_dockPanel; }
-            }
+            public DockPanel DockPanel { get; }
 
-            private AutoHideStateCollection m_states;
-            private AutoHideStateCollection States
-            {
-                get { return m_states; }
-            }
+            private AutoHideStateCollection States { get; }
 
             public int Count
             {
@@ -326,47 +304,27 @@ namespace XiaoCai.WinformUI.Docking
 
 		protected AutoHideStripBase(DockPanel panel)
 		{
-			m_dockPanel = panel;
-			m_panesTop = new PaneCollection(panel, DockState.DockTopAutoHide);
-			m_panesBottom = new PaneCollection(panel, DockState.DockBottomAutoHide);
-			m_panesLeft = new PaneCollection(panel, DockState.DockLeftAutoHide);
-			m_panesRight = new PaneCollection(panel, DockState.DockRightAutoHide);
+			DockPanel = panel;
+			PanesTop = new PaneCollection(panel, DockState.DockTopAutoHide);
+			PanesBottom = new PaneCollection(panel, DockState.DockBottomAutoHide);
+			PanesLeft = new PaneCollection(panel, DockState.DockLeftAutoHide);
+			PanesRight = new PaneCollection(panel, DockState.DockRightAutoHide);
 
 			SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 			SetStyle(ControlStyles.Selectable, false);
 		}
 
-		private DockPanel m_dockPanel;
-		protected DockPanel DockPanel
-		{
-			get	{	return m_dockPanel;	}
-		}
+	    protected DockPanel DockPanel { get; }
 
-		private PaneCollection m_panesTop;
-		protected PaneCollection PanesTop
-		{
-			get	{	return m_panesTop;	}
-		}
+	    protected PaneCollection PanesTop { get; }
 
-		private PaneCollection m_panesBottom;
-		protected PaneCollection PanesBottom
-		{
-			get	{	return m_panesBottom;	}
-		}
+	    protected PaneCollection PanesBottom { get; }
 
-		private PaneCollection m_panesLeft;
-		protected PaneCollection PanesLeft
-		{
-			get	{	return m_panesLeft;	}
-		}
+	    protected PaneCollection PanesLeft { get; }
 
-		private PaneCollection m_panesRight;
-		protected PaneCollection PanesRight
-		{
-			get	{	return m_panesRight;	}
-		}
+	    protected PaneCollection PanesRight { get; }
 
-		protected PaneCollection GetPanes(DockState dockState)
+	    protected PaneCollection GetPanes(DockState dockState)
 		{
 			if (dockState == DockState.DockTopAutoHide)
 				return PanesTop;

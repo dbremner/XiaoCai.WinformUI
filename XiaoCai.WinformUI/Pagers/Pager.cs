@@ -23,16 +23,12 @@ namespace XiaoCai.WinformUI
                 BuildPageControl();
             }
         }
-        int _currentPage = 1;//当前页 
+
         /// <summary>
         /// 当前页 
         /// </summary>
         [Description("当前页"), Category("分页设置")]
-        public int CurrentPage
-        {
-            get { return _currentPage; }
-            set { _currentPage = value; }
-        }
+        public int CurrentPage { get; set; } = 1;
 
         /// <summary>
         /// 每页显示条数
@@ -89,16 +85,12 @@ namespace XiaoCai.WinformUI
         private int ButtonWidth { get; set; }
         [Description("按钮宽度"), Category("分页设置")]
         private int ButtonWidth3 { get; set; }
-        private int _buttonHeight = 20;//按钮高度
+
         /// <summary>
         /// 按钮高度
         /// </summary>
         [Description("按钮高度"), Category("分页设置")]
-        private int ButtonHeight
-        {
-            get { return _buttonHeight; }
-            set { _buttonHeight = value; }
-        }
+        private int ButtonHeight { get; set; } = 20;
 
         /// <summary>
         /// 按钮间距离

@@ -39,19 +39,11 @@ namespace XiaoCai.WinformUI
             get { return _imagelocation; }
             set { _imagelocation = value; this.Refresh(); }
         }
-        private int _imageoffset = 2;
+
         [DefaultValue(2)]
-        public int ImageOffset
-        {
-            get { return _imageoffset; }
-            set { _imageoffset = value; }
-        }
-        private Point _maximagesize;
-        public Point MaxImageSize
-        {
-            get { return _maximagesize; }
-            set { _maximagesize = value; }
-        }
+        public int ImageOffset { get; set; } = 2;
+
+        public Point MaxImageSize { get; set; }
 
         #endregion
 
@@ -131,13 +123,10 @@ namespace XiaoCai.WinformUI
             get { return _title; }
             set { _title = value; this.Refresh(); }
         }
-        private bool _keeppress = false;
+
         [DefaultValue(false)]
-        public bool KeepPress
-        {
-            get { return _keeppress; }
-            set { _keeppress = value; }
-        }
+        public bool KeepPress { get; set; } = false;
+
         private bool _ispressed = false;
         [DefaultValue(false)]
         public bool IsPressed
@@ -154,13 +143,10 @@ namespace XiaoCai.WinformUI
         #endregion
 
         #region Menu Pos
-        private Point _menupos = Point.Empty;
+
         [DefaultValue(typeof(Point))]
-        public Point MenuPos
-        {
-            get { return _menupos; }
-            set { _menupos = value; }
-        }
+        public Point MenuPos { get; set; } = Point.Empty;
+
         #endregion
 
         protected override void OnPaint(PaintEventArgs pevent)
@@ -346,19 +332,19 @@ namespace XiaoCai.WinformUI
         {
             if (this.Image != null)
             {
-                offsety = _imageoffset; offsetx = _imageoffset;
+                offsety = ImageOffset; offsetx = ImageOffset;
                 if (_imagelocation == EImagelocation.Left | _imagelocation == EImagelocation.Right)
                 {
                     imageheight = this.Height - offsety * 2;
-                    if (imageheight > _maximagesize.Y & _maximagesize.Y != 0)
-                    { imageheight = _maximagesize.Y; }
+                    if (imageheight > MaxImageSize.Y & MaxImageSize.Y != 0)
+                    { imageheight = MaxImageSize.Y; }
                     imagewidth = (int)((Convert.ToDouble(imageheight) / this.Image.Height) * this.Image.Width);
                 }
                 else if (_imagelocation == EImagelocation.Top | _imagelocation == EImagelocation.Bottom)
                 {
                     imagewidth = this.Width - offsetx * 2;
-                    if (imagewidth > _maximagesize.X & _maximagesize.X != 0)
-                    { imagewidth = _maximagesize.X; }
+                    if (imagewidth > MaxImageSize.X & MaxImageSize.X != 0)
+                    { imagewidth = MaxImageSize.X; }
                     imageheight = (int)((Convert.ToDouble(imagewidth) / this.Image.Width) * this.Image.Height);
 
                 }
@@ -533,24 +519,24 @@ namespace XiaoCai.WinformUI
                     if (_imagelocation == EImagelocation.Left)
                     {
                         Point[] points = new Point[3];
-                        points[0] = new Point(this.Width - 8 * _size - _imageoffset, this.Height / 2 - _size / 2);
-                        points[1] = new Point(this.Width - 2 * _size - _imageoffset, this.Height / 2 - _size / 2);
-                        points[2] = new Point(this.Width - 5 * _size - _imageoffset, this.Height / 2 + _size * 2);
+                        points[0] = new Point(this.Width - 8 * _size - ImageOffset, this.Height / 2 - _size / 2);
+                        points[1] = new Point(this.Width - 2 * _size - ImageOffset, this.Height / 2 - _size / 2);
+                        points[2] = new Point(this.Width - 5 * _size - ImageOffset, this.Height / 2 + _size * 2);
                         gr.FillPolygon(new SolidBrush(ForeColor), points);
                     }
                     else if (_imagelocation == EImagelocation.Top)
                     {
                         Point[] points = new Point[3];
-                        points[0] = new Point(this.Width / 2 + 8 * _size - _imageoffset, this.Height - _imageoffset - 5 * _size);
-                        points[1] = new Point(this.Width / 2 + 2 * _size - _imageoffset, this.Height - _imageoffset - 5 * _size);
-                        points[2] = new Point(this.Width / 2 + 5 * _size - _imageoffset, this.Height - _imageoffset - 2 * _size);
+                        points[0] = new Point(this.Width / 2 + 8 * _size - ImageOffset, this.Height - ImageOffset - 5 * _size);
+                        points[1] = new Point(this.Width / 2 + 2 * _size - ImageOffset, this.Height - ImageOffset - 5 * _size);
+                        points[2] = new Point(this.Width / 2 + 5 * _size - ImageOffset, this.Height - ImageOffset - 2 * _size);
                         gr.FillPolygon(new SolidBrush(ForeColor), points);
                     }
                     break;
                 case e_arrow.ToRight:
                     if (_imagelocation == EImagelocation.Left)
                     {
-                        int arrowxpos = this.Width - _splitdistance + 2 * _imageoffset;
+                        int arrowxpos = this.Width - _splitdistance + 2 * ImageOffset;
                         Point[] points = new Point[3];
                         points[0] = new Point(arrowxpos + 4, this.Height / 2 - 4 * _size);
                         points[1] = new Point(arrowxpos + 8, this.Height / 2);
@@ -668,7 +654,7 @@ namespace XiaoCai.WinformUI
 
         public void UpdateLeave()
         {
-            if (_keeppress == false | (_keeppress == true & _ispressed == false))
+            if (KeepPress == false | (KeepPress == true & _ispressed == false))
             {
                 _showbase = _tempshowbase;
                 _buttonMode = 0;
@@ -739,7 +725,7 @@ namespace XiaoCai.WinformUI
                 base.OnMouseUp(mevent);
 
                 #region Keep Press
-                if (_keeppress)
+                if (KeepPress)
                 {
                     _ispressed = true;
 

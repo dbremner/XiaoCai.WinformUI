@@ -17,14 +17,10 @@ namespace XiaoCai.WinformUI.Docking
         internal DockContentCollection(DockPane pane)
             : base(_emptyList)
         {
-            m_dockPane = pane;
+            DockPane = pane;
         }
 
-        private DockPane m_dockPane = null;
-        private DockPane DockPane
-        {
-            get { return m_dockPane; }
-        }
+        private DockPane DockPane { get; } = null;
 
         public new IDockContent this[int index]
         {

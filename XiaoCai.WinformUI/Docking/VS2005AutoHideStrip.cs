@@ -16,20 +16,9 @@ namespace XiaoCai.WinformUI.Docking
             {
             }
 
-            private int m_tabX = 0;
-            public int TabX
-            {
-                get { return m_tabX; }
-                set { m_tabX = value; }
-            }
+            public int TabX { get; set; } = 0;
 
-            private int m_tabWidth = 0;
-            public int TabWidth
-            {
-                get { return m_tabWidth; }
-                set { m_tabWidth = value; }
-            }
-
+            public int TabWidth { get; set; } = 0;
         }
 
 		private const int _ImageHeight = 16;
@@ -167,13 +156,9 @@ namespace XiaoCai.WinformUI.Docking
 
 		#endregion
 
-        private static Matrix _matrixIdentity = new Matrix();
-        private static Matrix MatrixIdentity
-		{
-            get { return _matrixIdentity; }
-		}
+	    private static Matrix MatrixIdentity { get; } = new Matrix();
 
-        private static DockState[] _dockStates;
+	    private static DockState[] _dockStates;
         private static DockState[] DockStates
 		{
 			get

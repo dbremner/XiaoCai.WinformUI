@@ -148,8 +148,7 @@ namespace XiaoCai.WinformUI.Panels
 
         #region FieldsPrivate
 
-        private BasePanel m_basePanel;
-		private System.Windows.Forms.ProfessionalColorTable m_professionalColorTable;
+        private System.Windows.Forms.ProfessionalColorTable m_professionalColorTable;
 		private Dictionary<KnownColors, Color> m_dictionaryRGBTable;
 		private bool m_bUseSystemColors;
 
@@ -406,12 +405,9 @@ namespace XiaoCai.WinformUI.Panels
         /// <summary>
         /// Gets or sets the panel or PanderPanelW
         /// </summary>
-        public BasePanel Panel
-		{
-			get { return this.m_basePanel; }
-			set { this.m_basePanel = value; }
-		}
-		internal Color FromKnownColor(KnownColors color)
+        public BasePanel Panel { get; set; }
+
+        internal Color FromKnownColor(KnownColors color)
 		{
 			return (Color)this.ColorTable[color];
 		}
@@ -422,7 +418,7 @@ namespace XiaoCai.WinformUI.Panels
                 if (this.m_dictionaryRGBTable == null)
                 {
                     this.m_dictionaryRGBTable = new Dictionary<KnownColors, Color>(0xd4);
-                    if ((this.m_basePanel != null) && (this.m_basePanel.ColorScheme == ColorScheme.Professional))
+                    if ((this.Panel != null) && (this.Panel.ColorScheme == ColorScheme.Professional))
                     {
                         if ((this.m_bUseSystemColors == true) || (ToolStripManager.VisualStylesEnabled == false))
                         {
@@ -458,7 +454,7 @@ namespace XiaoCai.WinformUI.Panels
         /// <param name="basePanel">Base class for the panel or PanderPanelW control.</param>
         public PanelColors(BasePanel basePanel) : this()
         {
-            this.m_basePanel = basePanel;
+            this.Panel = basePanel;
         }
         /// <summary>
         /// Clears the current color table
@@ -520,7 +516,7 @@ namespace XiaoCai.WinformUI.Panels
 
 		private void InitCustomColors(Dictionary<KnownColors, Color> rgbTable)
 		{
-            PanelW panel = this.m_basePanel as PanelW;
+            PanelW panel = this.Panel as PanelW;
             if (panel != null)
             {
                 rgbTable[KnownColors.BorderColor] = panel.CustomColors.BorderColor;
@@ -538,7 +534,7 @@ namespace XiaoCai.WinformUI.Panels
                 rgbTable[KnownColors.PanelCollapsedCaptionText] = panel.CustomColors.CollapsedCaptionText;
             }
 
-			PanderPanelW PanderPanelW = this.m_basePanel as PanderPanelW;
+			PanderPanelW PanderPanelW = this.Panel as PanderPanelW;
 			if (PanderPanelW != null)
 			{
                 rgbTable[KnownColors.BorderColor] = PanderPanelW.CustomColors.BorderColor;

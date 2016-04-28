@@ -18,33 +18,13 @@ namespace XiaoCai.WinformUI.Docking
             {
             }
 
-            private int m_tabX;
-            public int TabX
-            {
-                get { return m_tabX; }
-                set { m_tabX = value; }
-            }
+            public int TabX { get; set; }
 
-            private int m_tabWidth;
-            public int TabWidth
-            {
-                get { return m_tabWidth; }
-                set { m_tabWidth = value; }
-            }
+            public int TabWidth { get; set; }
 
-            private int m_maxWidth;
-            public int MaxWidth
-            {
-                get { return m_maxWidth; }
-                set { m_maxWidth = value; }
-            }
+            public int MaxWidth { get; set; }
 
-            private bool m_flag;
-            protected internal bool Flag
-            {
-                get { return m_flag; }
-                set { m_flag = value; }
-            }
+            protected internal bool Flag { get; set; }
         }
 
         protected internal override DockPaneStripBase.Tab CreateTab(IDockContent content)
@@ -225,14 +205,10 @@ namespace XiaoCai.WinformUI.Docking
             get { return VS2005AutoHideStrip.GraphicsPath; }
         }
 
-		private IContainer m_components;
-		private ToolTip m_toolTip;
-		private IContainer Components
-		{
-			get	{	return m_components;	}
-		}
+	    private ToolTip m_toolTip;
+		private IContainer Components { get; }
 
-		#region Customizable Properties
+	    #region Customizable Properties
         private static int ToolWindowStripGapTop
         {
             get { return _ToolWindowStripGapTop; }
@@ -493,9 +469,9 @@ namespace XiaoCai.WinformUI.Docking
 
 			SuspendLayout();
 
-			m_components = new Container();
+			Components = new Container();
 			m_toolTip = new ToolTip(Components);
-            m_selectMenu = new ContextMenuStrip(Components);
+            SelectMenu = new ContextMenuStrip(Components);
 
 			ResumeLayout();
 		}
@@ -555,14 +531,9 @@ namespace XiaoCai.WinformUI.Docking
             }
         }
 
-        private int m_endDisplayingTab = 0;
-        private int EndDisplayingTab
-        {
-            get { return m_endDisplayingTab; }
-            set { m_endDisplayingTab = value; }
-        }
+	    private int EndDisplayingTab { get; set; } = 0;
 
-        private bool m_documentTabsOverflow = false;
+	    private bool m_documentTabsOverflow = false;
         private bool DocumentTabsOverflow
         {
             set
@@ -1221,13 +1192,9 @@ namespace XiaoCai.WinformUI.Docking
 			}
 		}
 
-        private ContextMenuStrip m_selectMenu;
-        private ContextMenuStrip SelectMenu
-        {
-            get { return m_selectMenu; }
-        }
+	    private ContextMenuStrip SelectMenu { get; }
 
-        private void WindowList_Click(object sender, EventArgs e)
+	    private void WindowList_Click(object sender, EventArgs e)
         {
             int x = 0;
             int y = ButtonWindowList.Location.Y + ButtonWindowList.Height;

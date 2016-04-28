@@ -33,33 +33,26 @@ namespace XiaoCai.WinformUI.Docking
     public partial class DockPanel : Panel,IStyle
 	{
         private FocusManagerImpl m_focusManager;
-        private DockPanelExtender m_extender;
-        private DockPaneCollection m_panes;
-        private FloatWindowCollection m_floatWindows;
-        private AutoHideWindowControl m_autoHideWindow;
-        private DockWindowCollection m_dockWindows;
-        private DockContent m_dummyContent; 
-        private Control m_dummyControl;
         //public static  Style SkinStyle=Style.Office2007Blue;
         
 		public DockPanel()
 		{
             m_focusManager = new FocusManagerImpl(this);
-			m_extender = new DockPanelExtender(this);
-			m_panes = new DockPaneCollection();
-			m_floatWindows = new FloatWindowCollection();
+			Extender = new DockPanelExtender(this);
+			Panes = new DockPaneCollection();
+			FloatWindows = new FloatWindowCollection();
 
             SuspendLayout();
 
-			m_autoHideWindow = new AutoHideWindowControl(this);
-			m_autoHideWindow.Visible = false;
+			AutoHideWindow = new AutoHideWindowControl(this);
+			AutoHideWindow.Visible = false;
             SetAutoHideWindowParent();
 
-			m_dummyControl = new DummyControl();
-			m_dummyControl.Bounds = new Rectangle(0, 0, 1, 1);
-			Controls.Add(m_dummyControl);
+			DummyControl = new DummyControl();
+			DummyControl.Bounds = new Rectangle(0, 0, 1, 1);
+			Controls.Add(DummyControl);
 
-			m_dockWindows = new DockWindowCollection(this);
+			DockWindows = new DockWindowCollection(this);
 			Controls.AddRange(new Control[]	{
 				DockWindows[DockState.Document],
 				DockWindows[DockState.DockLeft],
@@ -68,7 +61,7 @@ namespace XiaoCai.WinformUI.Docking
 				DockWindows[DockState.DockBottom]
 				});
 
-			m_dummyContent = new DockContent();
+			DummyContent = new DockContent();
             ResumeLayout();
         }
 
@@ -190,37 +183,20 @@ namespace XiaoCai.WinformUI.Docking
 			set	{	AutoHideWindow.ActiveContent = value;	}
 		}
 
-        private bool m_allowEndUserDocking = true;
-		[LocalizedCategory("Category_Docking")]
+        [LocalizedCategory("Category_Docking")]
 		[LocalizedDescription("DockPanel_AllowEndUserDocking_Description")]
 		[DefaultValue(true)]
-		public bool AllowEndUserDocking
-		{
-			get	{	return m_allowEndUserDocking;	}
-			set	{	m_allowEndUserDocking = value;	}
-		}
+		public bool AllowEndUserDocking { get; set; } = true;
 
-        private bool m_allowEndUserNestedDocking = true;
         [LocalizedCategory("Category_Docking")]
         [LocalizedDescription("DockPanel_AllowEndUserNestedDocking_Description")]
         [DefaultValue(true)]
-        public bool AllowEndUserNestedDocking
-        {
-            get { return m_allowEndUserNestedDocking; }
-            set { m_allowEndUserNestedDocking = value; }
-        }
+        public bool AllowEndUserNestedDocking { get; set; } = true;
 
-        private DockContentCollection m_contents = new DockContentCollection();
-		[Browsable(false)]
-		public DockContentCollection Contents
-		{
-			get	{	return m_contents;	}
-		}
+        [Browsable(false)]
+		public DockContentCollection Contents { get; } = new DockContentCollection();
 
-		internal DockContent DummyContent
-		{
-			get	{	return m_dummyContent;	}
-		}
+        internal DockContent DummyContent { get; }
 
         private bool m_rightToLeftLayout = false;
         [DefaultValue(false)]
@@ -268,12 +244,9 @@ namespace XiaoCai.WinformUI.Docking
 		}
 
 		[Browsable(false)]
-		public DockPanelExtender Extender
-		{
-			get	{	return m_extender;	}
-		}
+		public DockPanelExtender Extender { get; }
 
-		public DockPanelExtender.IDockPaneFactory DockPaneFactory
+        public DockPanelExtender.IDockPaneFactory DockPaneFactory
 		{
 			get	{	return Extender.DockPaneFactory;	}
 		}
@@ -299,12 +272,9 @@ namespace XiaoCai.WinformUI.Docking
 		}
 
 		[Browsable(false)]
-		public DockPaneCollection Panes
-		{
-			get	{	return m_panes;	}
-		}
+		public DockPaneCollection Panes { get; }
 
-		internal Rectangle DockArea
+        internal Rectangle DockArea
 		{
 			get
 			{
@@ -420,10 +390,7 @@ namespace XiaoCai.WinformUI.Docking
 		}
 
 		[Browsable(false)]
-		public DockWindowCollection DockWindows
-		{
-			get	{	return m_dockWindows;	}
-		}
+		public DockWindowCollection DockWindows { get; }
 
         public void UpdateDockWindowZOrder(DockStyle dockStyle, bool fullPanelEdge)
         {
@@ -519,25 +486,15 @@ namespace XiaoCai.WinformUI.Docking
 			}
 		}
 
-		private Control DummyControl
-		{
-			get	{	return m_dummyControl;	}
-		}
+		private Control DummyControl { get; }
 
-		[Browsable(false)]
-		public FloatWindowCollection FloatWindows
-		{
-			get	{	return m_floatWindows;	}
-		}
+        [Browsable(false)]
+		public FloatWindowCollection FloatWindows { get; }
 
-        private Size m_defaultFloatWindowSize = new Size(300, 300);
         [Category("Layout")]
         [LocalizedDescription("DockPanel_DefaultFloatWindowSize_Description")]
-        public Size DefaultFloatWindowSize
-        {
-            get { return m_defaultFloatWindowSize; }
-            set { m_defaultFloatWindowSize = value; }
-        }
+        public Size DefaultFloatWindowSize { get; set; } = new Size(300, 300);
+
         private bool ShouldSerializeDefaultFloatWindowSize()
         {
             return DefaultFloatWindowSize != new Size(300, 300);

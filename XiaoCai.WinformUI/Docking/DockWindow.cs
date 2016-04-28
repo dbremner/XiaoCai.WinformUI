@@ -10,16 +10,13 @@ namespace XiaoCai.WinformUI.Docking
 	[ToolboxItem(false)]
 	public partial class DockWindow : Panel, INestedPanesContainer, ISplitterDragSource
 	{
-		private DockPanel m_dockPanel;
-		private DockState m_dockState;
-		private SplitterControl m_splitter;
-		private NestedPaneCollection m_nestedPanes;
+	    private SplitterControl m_splitter;
 
-		internal DockWindow(DockPanel dockPanel, DockState dockState)
+	    internal DockWindow(DockPanel dockPanel, DockState dockState)
 		{
-			m_nestedPanes = new NestedPaneCollection(this);
-			m_dockPanel = dockPanel;
-			m_dockState = dockState;
+			NestedPanes = new NestedPaneCollection(this);
+			DockPanel = dockPanel;
+			DockState = dockState;
 			Visible = false;
 
 			SuspendLayout();
@@ -64,22 +61,13 @@ namespace XiaoCai.WinformUI.Docking
 			get	{	return NestedPanes.VisibleNestedPanes;	}
 		}
 
-		public NestedPaneCollection NestedPanes
-		{
-			get	{	return m_nestedPanes;	}
-		}
+		public NestedPaneCollection NestedPanes { get; }
 
-		public DockPanel DockPanel
-		{
-			get	{	return m_dockPanel;	}
-		}
+	    public DockPanel DockPanel { get; }
 
-		public DockState DockState
-		{
-			get	{	return m_dockState;	}
-		}
+	    public DockState DockState { get; }
 
-		public bool IsFloat
+	    public bool IsFloat
 		{
 			get	{	return DockState == DockState.Float;	}
 		}

@@ -14,11 +14,9 @@ namespace XiaoCai.WinformUI.Docking
         [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]        
         protected internal class Tab : IDisposable
         {
-            private IDockContent m_content;
-
             public Tab(IDockContent content)
             {
-                m_content = content;
+                Content = content;
             }
 
             ~Tab()
@@ -26,14 +24,11 @@ namespace XiaoCai.WinformUI.Docking
                 Dispose(false);
             }
 
-            public IDockContent Content
-            {
-                get { return m_content; }
-            }
+            public IDockContent Content { get; }
 
             public Form ContentForm
             {
-                get { return m_content as Form; }
+                get { return Content as Form; }
             }
 
             public void Dispose()
@@ -67,15 +62,11 @@ namespace XiaoCai.WinformUI.Docking
             internal TabCollection(DockPane pane)
             {
                
-                m_dockPane = pane;
+                DockPane = pane;
 
             }
 
-            private DockPane m_dockPane;
-            public DockPane DockPane
-            {
-                get { return m_dockPane; }
-            }
+            public DockPane DockPane { get; }
 
             public int Count
             {
@@ -119,20 +110,16 @@ namespace XiaoCai.WinformUI.Docking
 
 		protected DockPaneStripBase(DockPane pane)
 		{
-			m_dockPane = pane;
+			DockPane = pane;
 
 			SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 			SetStyle(ControlStyles.Selectable, false);
             AllowDrop = true;
 		}
 
-		private DockPane m_dockPane;
-		protected DockPane DockPane
-		{
-			get	{	return m_dockPane;	}
-		}
+	    protected DockPane DockPane { get; }
 
-		protected DockPane.AppearanceStyle Appearance
+	    protected DockPane.AppearanceStyle Appearance
 		{
 			get	{	return DockPane.Appearance;	}
 		}

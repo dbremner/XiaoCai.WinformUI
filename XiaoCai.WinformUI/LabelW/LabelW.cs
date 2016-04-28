@@ -14,18 +14,12 @@ namespace XiaoCai.WinformUI
             base.BackColor = Color.Transparent;
         }
 
-        private bool _useStyle = false;
-
-        public bool UseStyle
-        {
-            get { return _useStyle; }
-            set { _useStyle = value; }
-        }
+        public bool UseStyle { get; set; } = false;
 
         #region IStyle 成员
         public void SetStyle(Style style)
         {
-            if (_useStyle)
+            if (UseStyle)
             {
                 _officeColorTable = StyleBuilderFactory.GetOffice2007ColorTable(style);
                 this.ForeColor = _officeColorTable.LabelTextColor;

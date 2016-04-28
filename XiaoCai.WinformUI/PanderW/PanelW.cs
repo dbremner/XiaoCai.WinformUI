@@ -21,17 +21,15 @@ namespace XiaoCai.WinformUI.Panels
     {
         #region FieldsPrivate
 
-        private Rectangle m_restoreBounds;
-        private bool m_bShowTransparentBackground;
+	    private bool m_bShowTransparentBackground;
 		private bool m_bShowPanderPanelWProfessionalStyle;
         private bool m_bShowCaptionbar;
         private bool m_bShowCaptionbarBorder;
         private LinearGradientMode m_linearGradientMode;
         private Image m_imageClosePanel;
-        private CustomPanelColors m_customColors;
-        private Image m_imgHoverBackground;
-        private System.Windows.Forms.Splitter m_associatedSplitter;
-		#endregion
+	    private Image m_imgHoverBackground;
+
+	    #endregion
  
 
         #endregion
@@ -43,22 +41,17 @@ namespace XiaoCai.WinformUI.Panels
         /// <value>The associated <see cref="Splitter"/></value>
         [Description("The associated Splitter.")]
         [Category("Behavior")]
-        public virtual System.Windows.Forms.Splitter AssociatedSplitter
-        {
-            get { return this.m_associatedSplitter; }
-            set { this.m_associatedSplitter = value; }
-        }
-        /// <summary>
+        public virtual System.Windows.Forms.Splitter AssociatedSplitter { get; set; }
+
+	    /// <summary>
         /// Gets the custom colors which are used for the panel.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         [Description("The custom colors which are used for the panel.")]
         [Category("Appearance")]
-        public CustomPanelColors CustomColors
-        {
-            get { return this.m_customColors; }
-        }
-        /// <summary>
+        public CustomPanelColors CustomColors { get; }
+
+	    /// <summary>
         /// Expands the panel.
         /// </summary>
         [Browsable(false)]
@@ -178,11 +171,9 @@ namespace XiaoCai.WinformUI.Panels
         /// A Rect that specifies the size and location of a panel before being either collapsed
         /// </remarks>
         [Browsable(false)]
-        public Rectangle RestoreBounds
-        {
-            get { return this.m_restoreBounds; }
-        }
-		#endregion
+        public Rectangle RestoreBounds { get; private set; }
+
+	    #endregion
 
 		#region MethodsPublic
 		/// <summary>
@@ -205,8 +196,8 @@ namespace XiaoCai.WinformUI.Panels
             this.ImageSize = new Size(18, 18);
             this.m_bShowCaptionbar = true;
 		    this.m_bShowCaptionbarBorder = true;
-            this.m_customColors = new CustomPanelColors();
-            this.m_customColors.CustomColorsChanged += OnCustomColorsChanged;
+            this.CustomColors = new CustomPanelColors();
+            this.CustomColors.CustomColorsChanged += OnCustomColorsChanged;
 		}
         /// <summary>
         /// Sets the PanelProperties for the Panel
@@ -522,7 +513,7 @@ namespace XiaoCai.WinformUI.Panels
 			{
                 if (this.ClientRectangle.Width > this.CaptionHeight)
                 {
-                    this.m_restoreBounds = this.ClientRectangle;
+                    this.RestoreBounds = this.ClientRectangle;
                 }
                 this.Width = this.CaptionHeight;
 			}
@@ -531,7 +522,7 @@ namespace XiaoCai.WinformUI.Panels
 			{
                 if (this.ClientRectangle.Height > this.CaptionHeight)
                 {
-                    this.m_restoreBounds = this.ClientRectangle;
+                    this.RestoreBounds = this.ClientRectangle;
                 }
                 this.Height = this.CaptionHeight;
 			}
@@ -555,12 +546,12 @@ namespace XiaoCai.WinformUI.Panels
                 //otherwise the captionclick event was executed
                 if (this.ClientRectangle.Width == this.CaptionHeight)
                 {
-                    this.Width = this.m_restoreBounds.Width;
+                    this.Width = this.RestoreBounds.Width;
                 }
 			}
 			if ((this.Dock == DockStyle.Top) || (this.Dock == DockStyle.Bottom))
 			{
-				this.Height = this.m_restoreBounds.Height;
+				this.Height = this.RestoreBounds.Height;
 			}
 
 			base.OnPanelExpanding(sender, e);
@@ -581,7 +572,7 @@ namespace XiaoCai.WinformUI.Panels
 		/// </summary>
 		protected override void OnCreateControl()
 		{
-			this.m_restoreBounds = this.ClientRectangle;
+			this.RestoreBounds = this.ClientRectangle;
             this.MinimumSize = new Size(this.CaptionHeight, this.CaptionHeight);
             base.OnCreateControl();
 		}
